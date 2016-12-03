@@ -1,0 +1,19 @@
+{
+    "name": "notadd/installers",
+    "type": "composer-plugin",
+    "keywords": ["notadd", "cms", "installers", "plugin"],
+    "homepage": "https://notadd.com",
+    "license": "Apache-2.0",
+    "authors": [
+        {
+            "name": "twilroad",
+            "email": "269044570@qq.com"
+        }
+    ],
+    "require": {
+        "composer-plugin-api": "^1.0"
+    },
+    "require-dev": {
+        "composer/composer": "1.0.*@dev"
+    }
+}
