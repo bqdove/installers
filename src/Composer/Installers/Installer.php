@@ -22,8 +22,8 @@ class Installer extends LibraryInstaller
      * @return string
      */
     public function getInstallPath(PackageInterface $package) {
-        $this->io->write("<info>Install from Notadd</info>");
-        return 'modules/' . $package->getPrettyName();
+        list($vendor, $name) = explode('/', $package->getPrettyName());
+        return 'modules/' . $name;
     }
 
     /**
@@ -33,7 +33,6 @@ class Installer extends LibraryInstaller
      */
     public function supports($packageType)
     {
-        $this->io->write("<info>Package Type: {$packageType}</info>");
         return $packageType === 'notadd-module';
     }
 }
