@@ -17,17 +17,23 @@ use Composer\Package\PackageInterface;
 class Installer extends LibraryInstaller
 {
     /**
+     * TODO: Method getInstallPath Description
+     *
      * @param \Composer\Package\PackageInterface $package
      *
      * @return string
      */
-    public function getInstallPath(PackageInterface $package) {
+    public function getInstallPath(PackageInterface $package)
+    {
         list($vendor, $name) = explode('/', $package->getPrettyName());
+
         return 'modules/' . $name;
     }
 
     /**
-     * @param string $packageType
+     * TODO: Method supports Description
+     *
+     * @param $packageType
      *
      * @return bool
      */

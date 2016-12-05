@@ -19,6 +19,8 @@ use Notadd\Installers\Composer\Installers\Installer;
 class Plugin implements PluginInterface
 {
     /**
+     * TODO: Method activate Description
+     *
      * @param \Composer\Composer       $composer
      * @param \Composer\IO\IOInterface $io
      */
