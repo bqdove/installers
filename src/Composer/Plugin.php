@@ -19,7 +19,7 @@ use Notadd\Installers\Composer\Installers\Installer;
 class Plugin implements PluginInterface
 {
     /**
-     * TODO: Method activate Description
+     * Add installer to Composer Installation Manager.
      *
      * @param \Composer\Composer       $composer
      * @param \Composer\IO\IOInterface $io

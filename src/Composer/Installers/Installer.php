@@ -17,7 +17,7 @@ use Composer\Package\PackageInterface;
 class Installer extends LibraryInstaller
 {
     /**
-     * TODO: Method getInstallPath Description
+     * Get install path for Composer Installer.
      *
      * @param \Composer\Package\PackageInterface $package
      *
@@ -31,7 +31,7 @@ class Installer extends LibraryInstaller
     }
 
     /**
-     * TODO: Method supports Description
+     * Confirm supported Package Types.
      *
      * @param $packageType
      *
