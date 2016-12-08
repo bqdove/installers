@@ -9,16 +9,16 @@
 namespace Notadd\Installers\Composer;
 
 use Composer\Composer;
-use Composer\EventDispatcher\EventSubscriberInterface;
+//use Composer\EventDispatcher\EventSubscriberInterface;
 use Composer\IO\IOInterface;
-use Composer\Plugin\PluginEvents;
+//use Composer\Plugin\PluginEvents;
 use Composer\Plugin\PluginInterface;
 use Notadd\Installers\Composer\Installers\Installer;
 
 /**
  * Class Plugin.
  */
-class Plugin implements EventSubscriberInterface, PluginInterface
+class Plugin implements /*EventSubscriberInterface, */PluginInterface
 {
     /**
      * @var \Composer\Composer
@@ -58,10 +58,10 @@ class Plugin implements EventSubscriberInterface, PluginInterface
      *
      * @return array The event names to listen to
      */
-    public static function getSubscribedEvents()
-    {
-        return [
-            PluginEvents::INIT => 'onInit',
-        ];
-    }
+//    public static function getSubscribedEvents()
+//    {
+//        return [
+//            PluginEvents::INIT => 'onInit',
+//        ];
+//    }
 }
