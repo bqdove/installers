@@ -6,7 +6,7 @@
  * @copyright (c) 2016, iBenchu.org
  * @datetime 2016-12-03 13:55
  */
-namespace Notadd\Installers\Composer\Installers;
+namespace Notadd\Installer\Composer\Installers;
 
 use Composer\Installer\LibraryInstaller;
 use Composer\Package\PackageInterface;

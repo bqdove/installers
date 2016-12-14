@@ -6,14 +6,14 @@
  * @copyright (c) 2016, iBenchu.org
  * @datetime 2016-12-03 13:49
  */
-namespace Notadd\Installers\Composer;
+namespace Notadd\Installer\Composer;
 
 use Composer\Composer;
 //use Composer\EventDispatcher\EventSubscriberInterface;
 use Composer\IO\IOInterface;
 //use Composer\Plugin\PluginEvents;
 use Composer\Plugin\PluginInterface;
-use Notadd\Installers\Composer\Installers\Installer;
+use Notadd\Installer\Composer\Installers\Installer;
 
 /**
  * Class Plugin.
