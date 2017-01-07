@@ -41,7 +41,7 @@ class InstallController extends Controller
     }
 
     /**
-     * TODO: Method index Description
+     * Index handler.
      *
      * @return \Illuminate\Contracts\View\View
      */
@@ -59,7 +59,7 @@ class InstallController extends Controller
     }
 
     /**
-     * TODO: Method store Description
+     * Store handler.
      *
      * @param \Notadd\Installer\Requests\InstallRequest $request
      *

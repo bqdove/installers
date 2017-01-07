@@ -31,7 +31,7 @@ class PhpExtension extends Prerequisite
     }
 
     /**
-     * TODO: Method check Description
+     * Checking prerequisite's rules.
      */
     public function check()
     {

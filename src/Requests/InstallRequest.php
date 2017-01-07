@@ -16,7 +16,7 @@ use Notadd\Foundation\Http\FormRequest;
 class InstallRequest extends FormRequest
 {
     /**
-     * TODO: Method authorize Description
+     * Determine if the request passes the authorization check.
      *
      * @return bool
      */
@@ -26,7 +26,7 @@ class InstallRequest extends FormRequest
     }
 
     /**
-     * TODO: Method messages Description
+     * Get custom messages for validator errors.
      *
      * @return array
      */
@@ -42,7 +42,7 @@ class InstallRequest extends FormRequest
     }
 
     /**
-     * TODO: Method rules Description
+     * Get rules for validator.
      *
      * @return array
      */

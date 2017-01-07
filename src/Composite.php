@@ -33,7 +33,7 @@ class Composite implements Prerequisite
     }
 
     /**
-     * TODO: Method check Description
+     * Checking prerequisites's rules.
      *
      * @return mixed
      */
@@ -45,7 +45,7 @@ class Composite implements Prerequisite
     }
 
     /**
-     * TODO: Method getErrors Description
+     * Get prerequisite's error message.
      *
      * @return mixed
      */
