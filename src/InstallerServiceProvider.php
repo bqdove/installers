@@ -10,7 +10,6 @@ namespace Notadd\Installer;
 
 use Illuminate\Support\ServiceProvider;
 use Notadd\Installer\Commands\InstallCommand;
-use Notadd\Installer\Composite;
 use Notadd\Installer\Contracts\Prerequisite;
 use Notadd\Installer\Controllers\InstallController;
 use Notadd\Installer\Prerequisite\PhpExtension;
