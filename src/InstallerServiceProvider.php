@@ -33,6 +33,7 @@ class InstallerServiceProvider extends ServiceProvider
             InstallCommand::class,
         ]);
         $this->loadViewsFrom(__DIR__ . '/../resources/views', 'install');
+        $this->loadTranslationsFrom(__DIR__ . '/../resources/translations', 'install');
     }
 
     /**
