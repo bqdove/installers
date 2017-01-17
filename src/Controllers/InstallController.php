@@ -33,6 +33,8 @@ class InstallController extends Controller
      * InstallController constructor.
      *
      * @param \Notadd\Installer\Contracts\Prerequisite $prerequisite
+     *
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
     public function __construct(Prerequisite $prerequisite)
     {
@@ -64,6 +66,8 @@ class InstallController extends Controller
      * @param \Notadd\Installer\Requests\InstallRequest $request
      *
      * @return \Illuminate\Contracts\View\View
+     * @throws \Exception
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
     public function store(InstallRequest $request)
     {
