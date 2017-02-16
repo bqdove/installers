@@ -2,9 +2,9 @@
 /**
  * This file is part of Notadd.
  *
- * @author TwilRoad <269044570@qq.com>
+ * @author        TwilRoad <269044570@qq.com>
  * @copyright (c) 2016, iBenchu.org
- * @datetime 2016-09-26 16:58
+ * @datetime      2016-09-26 16:58
  */
 namespace Notadd\Installer\Commands;
 
@@ -50,8 +50,8 @@ class InstallCommand extends Command
     public function __construct(Filesystem $files, Repository $config)
     {
         parent::__construct();
-        $this->config = $config;
-        $this->data = new Collection();
+        $this->config     = $config;
+        $this->data       = new Collection();
         $this->filesystem = $files;
     }
 
@@ -84,7 +84,7 @@ class InstallCommand extends Command
      */
     public function fire()
     {
-        if (!$this->isDataSetted) {
+        if (! $this->isDataSetted) {
             $this->setDataFromConsoling();
         }
         $this->config->set('database', [
@@ -137,6 +137,7 @@ class InstallCommand extends Command
         // 导入用户权限
         $this->call('permission', [
             '--force' => true,
+            '--all'   => true,
         ]);
 
         $this->call('passport:keys');
