@@ -132,8 +132,13 @@ class InstallCommand extends Command
         }
         $this->call('migrate', [
             '--force' => true,
-            '--path'  => str_replace(base_path() . DIRECTORY_SEPARATOR, '', base_path('vendor/notadd/framework/databases/migrations')),
         ]);
+
+        // 导入用户权限
+        $this->call('permission', [
+            '--force' => true,
+        ]);
+
         $this->call('passport:keys');
         $this->call('passport:client', [
             '--password' => true,
