@@ -147,11 +147,7 @@ class InstallCommand extends Command
         ]);
         $setting = $this->container->make(SettingsRepository::class);
         $setting->set('site.name', $this->data->get('website'));
-        $setting->set('setting.image.engine', 'webp');
-        if ($this->data->get('image_engine', false)) {
-        } else {
-            $setting->set('setting.image.engine', 'normal');
-        }
+        $setting->set('setting.image.engine', 'normal');
         $this->createAdministrationUser();
         $this->writingConfiguration();
         $this->call('key:generate');
@@ -179,7 +175,6 @@ class InstallCommand extends Command
         $this->data->put('admin_password_confirmation', $this->ask('重复密码：'));
         $this->data->put('admin_email', $this->ask('电子邮箱：'));
         $this->data->put('website', $this->ask('网站标题：'));
-        $this->data->put('image_engine', $this->ask('是否开启Webp图片模式(on)：'));
         $this->info('所填写的信息是：');
         $this->info('数据库引擎：' . $this->data->get('driver'));
         if (in_array($this->data->get('driver'), [
@@ -197,7 +192,6 @@ class InstallCommand extends Command
         $this->info('重复密码：' . $this->data->get('admin_password_confirmation'));
         $this->info('电子邮箱：' . $this->data->get('admin_email'));
         $this->info('网站标题：' . $this->data->get('website'));
-        $this->info('是否开启Webp图片模式：' . $this->data->get('image_engine') == 'on' ? '开启' : '关闭');
         $this->isDataSetted = true;
     }
 
@@ -208,7 +202,6 @@ class InstallCommand extends Command
      */
     public function setDataFromController(array $data)
     {
-        $this->data->put('image_engine', $data['image_engine']);
         $this->data->put('driver', $data['driver']);
         $this->data->put('database_host', $data['database_host']);
         $this->data->put('database', $data['database']);

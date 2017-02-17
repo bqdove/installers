@@ -12,12 +12,6 @@
                 <form action="{{ url('/') }}" class="form-horizontal" id="install-form" method="post">
                     <fieldset>
                         <div class="content">
-                            <div class="form-group">
-                                <label for="toggle1" class="col-xs-6 control-label webp-label">Webp图片模式</label>
-                                <div class="togglebutton" id="toggle1">
-                                    <label><input name="image_engine" type="checkbox" checked></label>
-                                </div>
-                            </div>
                             <div class="form-group label-floating">
                                 <label class="control-label">你的网站名称</label>
                                 <input class="form-control" type="text" name="website">
