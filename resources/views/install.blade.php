@@ -25,7 +25,7 @@
                             <div class="data" id="data">
                                 <div class="form-group label-floating">
                                     <label class="control-label">数据库地址</label>
-                                    <input class="form-control" name="database_host" type="text">
+                                    <input class="form-control" name="database_host" type="text" value="localhost">
                                 </div>
                                 <div class="form-group label-floating">
                                     <label class="control-label">数据库名</label>
@@ -111,108 +111,107 @@
             }, $.validator.format("请勿输入空白字符"));
         });
         $().ready(function () {
-            $('#install-form').validate(
-                {
-                    rules: {
-                        website: {
-                            required: true,
-                            noSpace: true
-                        },
-                        database_host: {
-                            required: true,
-                            noSpace: true
-                        },
-                        database_username: {
-                            required: true,
-                            noSpace: true
-                        },
-                        database_password: {
-                            required: true,
-                            noSpace: true,
-                            minlength: 6
-                        },
-                        database: {
-                            required: true,
-                            noSpace: true
-                        },
-                        database_prefix: {
-                            required: true,
-                            noSpace: true
-                        },
-                        admin_account: {
-                            required: true,
-                            noSpace: true
-                        },
-                        admin_email: {
-                            required: true,
-                            noSpace: true,
-                            email: true
-                        },
-                        admin_password: {
-                            required: true,
-                            noSpace: true,
-                            minlength: 6
-                        },
-                        admin_password_confirmation: {
-                            required: true,
-                            noSpace: true,
-                            minlength: 6,
-                            equalTo: "input[name=admin_password]"
-                        },
-                        success: "valid",
-                        errorClass: "error",
-                        errorPlacement: function (error, element) {
-                            error.appendTo(element.parent());
-                        }
+            $('#install-form').validate({
+                rules: {
+                    website: {
+                        required: true,
+                        noSpace: true
                     },
-                    messages: {
-                        website: {
-                            required: "请输入网站名称",
-                            noSpace: "请勿输入空白字符"
-                        },
-                        database_host: {
-                            required: "请输入数据库地址",
-                            noSpace: "请勿输入空白字符"
-                        },
-                        database_username: {
-                            required: "请输入数据库地址",
-                            noSpace: "请勿输入空白字符"
-                        },
-                        database_password: {
-                            required: "请输入数据库密码",
-                            minlength: "数据库密码至少为6位",
-                            noSpace: "请勿输入空白字符"
-                        },
-                        database: {
-                            required: "请输入数据名",
-                            noSpace: "请勿输入空白字符"
-                        },
-                        database_prefix: {
-                            required: "请输入数据表前缀",
-                            noSpace: "请勿输入空白字符"
-                        },
-                        admin_account: {
-                            required: "请输入管理员账号",
-                            noSpace: "请勿输入空白字符"
-                        },
-                        admin_email: {
-                            required: "请输入管理员邮箱",
-                            emaill: "请输入正确的管理员邮箱",
-                            noSpace: "请勿输入空白字符"
-                        },
-                        admin_password: {
-                            noSpace: "请勿输入空白字符",
-                            required: "请输入管理员密码",
-                            minlength: "管理员密码至少为6位"
-                        },
-                        admin_password_confirmation: {
-                            noSpace: "请勿输入空白字符",
-                            required: "请再次输入管理员密码",
-                            minlength: "管理员密码至少为6位",
-                            equalTo: "与上面输入的密码不一致"
-                        }
+                    database_host: {
+                        required: true,
+                        noSpace: true
+                    },
+                    database_username: {
+                        required: true,
+                        noSpace: true
+                    },
+                    database_password: {
+                        required: true,
+                        noSpace: true,
+                        minlength: 6
+                    },
+                    database: {
+                        required: true,
+                        noSpace: true
+                    },
+                    database_prefix: {
+                        required: true,
+                        noSpace: true
+                    },
+                    admin_account: {
+                        required: true,
+                        noSpace: true
+                    },
+                    admin_email: {
+                        required: true,
+                        noSpace: true,
+                        email: true
+                    },
+                    admin_password: {
+                        required: true,
+                        noSpace: true,
+                        minlength: 6
+                    },
+                    admin_password_confirmation: {
+                        required: true,
+                        noSpace: true,
+                        minlength: 6,
+                        equalTo: "input[name=admin_password]"
+                    },
+                    success: "valid",
+                    errorClass: "error",
+                    errorPlacement: function (error, element) {
+                        error.appendTo(element.parent());
                     }
-                });
+                },
+                messages: {
+                    website: {
+                        required: "请输入网站名称",
+                        noSpace: "请勿输入空白字符"
+                    },
+                    database_host: {
+                        required: "请输入数据库地址",
+                        noSpace: "请勿输入空白字符"
+                    },
+                    database_username: {
+                        required: "请输入数据库地址",
+                        noSpace: "请勿输入空白字符"
+                    },
+                    database_password: {
+                        required: "请输入数据库密码",
+                        minlength: "数据库密码至少为6位",
+                        noSpace: "请勿输入空白字符"
+                    },
+                    database: {
+                        required: "请输入数据名",
+                        noSpace: "请勿输入空白字符"
+                    },
+                    database_prefix: {
+                        required: "请输入数据表前缀",
+                        noSpace: "请勿输入空白字符"
+                    },
+                    admin_account: {
+                        required: "请输入管理员账号",
+                        noSpace: "请勿输入空白字符"
+                    },
+                    admin_email: {
+                        required: "请输入管理员邮箱",
+                        emaill: "请输入正确的管理员邮箱",
+                        noSpace: "请勿输入空白字符"
+                    },
+                    admin_password: {
+                        noSpace: "请勿输入空白字符",
+                        required: "请输入管理员密码",
+                        minlength: "管理员密码至少为6位"
+                    },
+                    admin_password_confirmation: {
+                        noSpace: "请勿输入空白字符",
+                        required: "请再次输入管理员密码",
+                        minlength: "管理员密码至少为6位",
+                        equalTo: "与上面输入的密码不一致"
+                    }
+                }
+            });
         });
     </script>
 @endsection
