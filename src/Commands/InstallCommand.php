@@ -146,6 +146,7 @@ class InstallCommand extends Command
             '--name'     => 'Notadd Administrator Client',
         ]);
         $setting = $this->container->make(SettingsRepository::class);
+        $setting->set('site.enabled', true);
         $setting->set('site.name', $this->data->get('website'));
         $setting->set('setting.image.engine', 'normal');
         $this->createAdministrationUser();
