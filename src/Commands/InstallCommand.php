@@ -149,6 +149,7 @@ class InstallCommand extends Command
         $setting->set('site.enabled', true);
         $setting->set('site.name', $this->data->get('website'));
         $setting->set('setting.image.engine', 'normal');
+        $setting->set('module.notadd/administration.enabled', true);
         $this->createAdministrationUser();
         $this->writingConfiguration();
         $this->call('key:generate');
