@@ -11,6 +11,30 @@ body {
 .container {
   margin: 0 auto;
   width: 1000px;
+  .row {
+    &:after {
+      clear: both;
+    }
+    &:before {
+      display: table;
+      content: " ";
+    }
+    > .col-3 {
+      min-height: 1px;
+      position: relative;
+      width: 25%;
+    }
+    > .col-4 {
+      min-height: 1px;
+      position: relative;
+      width: 33.333333%;
+    }
+    > .col-12 {
+      min-height: 1px;
+      position: relative;
+      width: 100%;
+    }
+  }
 }
 
 .install-wrap {
@@ -32,14 +56,13 @@ body {
     background: #fff;
     box-shadow: 0 0 43px rgba(0, 0, 0, 0.07);
     margin-top: -148px;
-    min-height: 400px;
-    > .step-wrap {
-      height: 148px;
+    > .step-header {
+      height: 128px;
       margin-bottom: 20px;
       > .step {
         border-top: 4px solid #e4e4e4;
         float: left;
-        height: 148px;
+        height: 128px;
         width: 25%;
         > em {
           color: #b0b0b0;
@@ -79,6 +102,49 @@ body {
         }
         &.success {
           border-color: #bde2fd;
+        }
+      }
+    }
+    > .step-content {
+      padding: 0 80px;
+      > h1 {
+        color: #5a5a5a;
+        font-size: 18px;
+        font-weight: normal;
+        height: 74px;
+        line-height: 74px;
+        margin: 0 0 20px;
+      }
+      > .form-horizontal {
+        padding-bottom: 20px;
+        .form-group {
+          margin-bottom: 10px;
+          > input {
+            background-color: #f9fbfd;
+            border: none;
+            box-shadow: 6px 4px 16px 0 rgba(0, 0, 0, 0.06);
+            color: #b0b0b0;
+            display: block;
+            font-size: 14px;
+            font-weight: normal;
+            height: 46px;
+            padding: 0 15px;
+            width: 100%;
+            &:focus {
+              background-color: #f9fbfd;
+              border: none;
+              box-shadow: 6px 4px 16px 0 rgba(26, 159, 255, 0.17);
+              color: #1a9fff;
+              outline: none;
+            }
+          }
+          > label {
+            color: #838383;
+            display: block;
+            font-size: 14px;
+            height: 46px;
+            line-height: 46px;
+          }
         }
       }
     }
