@@ -2,12 +2,21 @@
   export default {
     data () {
       return {
+        administration: {
+          email: '',
+          password: '',
+          username: ''
+        },
         database: {
           database: '',
           engine: 'postgres',
           host: 'localhost',
           password: '',
           username: 'root'
+        },
+        result: {
+          administration: 'http://notadd.dev/admin',
+          frontend: 'http://notadd.dev',
         },
         sitename: ''
       }
@@ -106,7 +115,7 @@
                             <div class="col-4">
                                 <div class="form-group">
                                     <label>管理员邮箱</label>
-                                    <input type="text" placeholder="admin">
+                                    <input type="text" placeholder="请输入管理员邮箱" v-model="administration.email">
                                 </div>
                             </div>
                         </div>
@@ -114,13 +123,13 @@
                             <div class="col-4">
                                 <div class="form-group">
                                     <label>账户</label>
-                                    <input type="text" placeholder="admin">
+                                    <input type="text" placeholder="请输入管理员账号" v-model="administration.username">
                                 </div>
                             </div>
                             <div class="col-4">
                                 <div class="form-group">
                                     <label>密码</label>
-                                    <input type="text" placeholder="admin">
+                                    <input type="text" placeholder="请输入管理员密码" v-model="administration.password">
                                 </div>
                             </div>
                         </div>
@@ -132,19 +141,19 @@
                     </div>
                 </div>
                 <div class="step-content">
-                    <h1>恭喜你！安装成功！</h1>
+                    <h1 class="success">恭喜你！安装成功！</h1>
                     <div class="form-horizontal">
                         <div class="row">
                             <div class="col-4">
                                 <div class="form-group">
                                     <label>后台管理地址</label>
-                                    <a href="http://notadd.dev/admin">http://notadd.dev/admin</a>
+                                    <a :href="result.administration" target="_blank">{{ result.administration }}</a>
                                 </div>
                             </div>
                             <div class="col-4">
                                 <div class="form-group">
                                     <label>前台首页</label>
-                                    <a href="http://notadd.dev">http://notadd.dev</a>
+                                    <a :href="result.frontend" target="_blank">{{ result.frontend }}</a>
                                 </div>
                             </div>
                         </div>
@@ -152,13 +161,13 @@
                             <div class="col-4">
                                 <div class="form-group">
                                     <label>账户</label>
-                                    <input type="text" placeholder="admin">
+                                    <input type="text" placeholder="未输入管理员账号" v-model="administration.username">
                                 </div>
                             </div>
                             <div class="col-4">
                                 <div class="form-group">
                                     <label>密码</label>
-                                    <input type="text" placeholder="admin">
+                                    <input type="text" placeholder="未输入管理员密码" v-model="administration.password">
                                 </div>
                             </div>
                         </div>
