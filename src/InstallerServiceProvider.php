@@ -8,10 +8,12 @@
  */
 namespace Notadd\Installer;
 
+use Illuminate\Events\Dispatcher;
 use Illuminate\Support\ServiceProvider;
 use Notadd\Installer\Commands\InstallCommand;
 use Notadd\Installer\Contracts\Prerequisite;
 use Notadd\Installer\Controllers\InstallController;
+use Notadd\Installer\Listeners\RouteRegister;
 use Notadd\Installer\Prerequisite\PhpExtension;
 use Notadd\Installer\Prerequisite\PhpVersion;
 use Notadd\Installer\Prerequisite\WritablePath;
@@ -27,6 +29,7 @@ class InstallerServiceProvider extends ServiceProvider
     public function boot()
     {
         if (!$this->app->isInstalled()) {
+            $this->app->make(Dispatcher::class)->subscribe(RouteRegister::class);
             $this->app->make('router')->resource('/', InstallController::class);
         }
         $this->commands([
