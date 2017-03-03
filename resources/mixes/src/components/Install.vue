@@ -1,5 +1,17 @@
 <script>
   export default {
+    data () {
+      return {
+        database: {
+          database: '',
+          engine: 'postgres',
+          host: 'localhost',
+          password: '',
+          username: 'root'
+        },
+        sitename: ''
+      }
+    }
   }
 </script>
 <template>
@@ -36,7 +48,7 @@
                             <div class="col-4">
                                 <div class="form-group">
                                     <label>您的网站名称</label>
-                                    <input type="text" placeholder="admin">
+                                    <input type="text" placeholder="请输入网站名称" v-model="sitename">
                                 </div>
                             </div>
                         </div>
@@ -45,9 +57,9 @@
                                 <div class="form-group">
                                     <label>选择数据库</label>
                                     <div class="btn-group">
-                                        <label class="active"><input type="radio">PostgreSQL</label>
-                                        <label><input type="radio">MySQL</label>
-                                        <label><input type="radio">SQLite3</label>
+                                        <label :class="{ active: database.engine === 'postgres' }"><input type="radio" name="database" value="postgres" v-model="database.engine">PostgreSQL</label>
+                                        <label :class="{ active: database.engine === 'mysql' }"><input type="radio" name="database" value="mysql" v-model="database.engine">MySQL</label>
+                                        <label :class="{ active: database.engine === 'sqlite' }"><input type="radio" name="database" value="sqlite" v-model="database.engine">SQLite3</label>
                                     </div>
                                 </div>
                             </div>
@@ -56,39 +68,33 @@
                             <div class="col-4">
                                 <div class="form-group">
                                     <label>数据库地址</label>
-                                    <input type="text" placeholder="admin">
+                                    <input type="text" placeholder="请输入数据库地址" v-model="database.host">
                                 </div>
                             </div>
+                            <div class="col-4">
+                                <div class="form-group">
+                                    <label>数据库名称</label>
+                                    <input type="text" placeholder="请输入数据库名称" v-model="database.database">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
                             <div class="col-4">
                                 <div class="form-group">
                                     <label>数据库用户名</label>
-                                    <input type="text" placeholder="admin">
+                                    <input type="text" placeholder="请输入数据库用户名" v-model="database.username">
                                 </div>
                             </div>
                             <div class="col-4">
                                 <div class="form-group">
-                                    <label>数据库名</label>
-                                    <input type="text" placeholder="admin">
+                                    <label>数据库密码</label>
+                                    <input type="text" placeholder="请输入数据库密码" v-model="database.password">
                                 </div>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-4">
-                                <div class="form-group">
-                                    <label>账户</label>
-                                    <input type="text" placeholder="admin">
-                                </div>
-                            </div>
-                            <div class="col-4">
-                                <div class="form-group">
-                                    <label>密码</label>
-                                    <input type="text" placeholder="admin">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-4">
-                                <button type="submit">安装</button>
+                                <button type="submit">下一步</button>
                             </div>
                         </div>
                     </div>
@@ -121,6 +127,39 @@
                         <div class="row">
                             <div class="col-4">
                                 <button type="submit">安装</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="step-content">
+                    <h1>恭喜你！安装成功！</h1>
+                    <div class="form-horizontal">
+                        <div class="row">
+                            <div class="col-4">
+                                <div class="form-group">
+                                    <label>后台管理地址</label>
+                                    <a href="http://notadd.dev/admin">http://notadd.dev/admin</a>
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="form-group">
+                                    <label>前台首页</label>
+                                    <a href="http://notadd.dev">http://notadd.dev</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-4">
+                                <div class="form-group">
+                                    <label>账户</label>
+                                    <input type="text" placeholder="admin">
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="form-group">
+                                    <label>密码</label>
+                                    <input type="text" placeholder="admin">
+                                </div>
                             </div>
                         </div>
                     </div>
