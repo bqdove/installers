@@ -1,10 +1,12 @@
 import './assets/style.less'
 import Vue from 'vue'
+import VueValidate from 'vee-validate'
 import App from './App'
 import notadd from './notadd'
 import router from './router'
 
-Vue.debug = true
+Vue.use(VueValidate)
+
 Vue.config.productionTip = false
 Vue.http = notadd.http
 Object.defineProperty(Vue.prototype, 'http', {

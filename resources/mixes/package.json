@@ -12,6 +12,7 @@
     "dependencies": {
         "axios": "^0.15.3",
         "normalize.css": "^5.0.0",
+        "vee-validate": "^2.0.0-beta.23",
         "vue": "^2.2.1",
         "vue-router": "^2.2.0",
         "vue2-scrollbar": "0.0.1"

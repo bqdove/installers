@@ -48,6 +48,21 @@
             },
           ],
           success: true
+        },
+        validates: {
+          administration: {
+            email: 'required|email',
+            password: 'required',
+            username: 'required'
+          },
+          database: {
+            database: 'required',
+            engine: 'required',
+            host: 'required',
+            password: 'required',
+            username: 'required'
+          },
+          sitename: 'required'
         }
       }
     },
@@ -89,12 +104,17 @@
       },
       setDatabase: function () {
         let _this = this
-        window.scrollTo(0, 0)
-        _this.$refs.progress.start()
-        _this.steps.current = 3
+        _this.$validator.validateAll('base')
+//        _this.steps.current = 3
       }
     },
     watch: {
+      errors: {
+        deep: true,
+        handler: function (val) {
+          console.log(val)
+        }
+      },
       'steps.current': {
         deep: true,
         handler: function (val) {
@@ -224,7 +244,7 @@
                             <div class="col-4">
                                 <div class="form-group">
                                     <label>您的网站名称</label>
-                                    <input type="text" placeholder="请输入网站名称" v-model="sitename">
+                                    <input type="text" name="sitename" placeholder="请输入网站名称" v-model="sitename" v-validate="validates.sitename" data-vv-scope="base">
                                 </div>
                             </div>
                         </div>
@@ -233,9 +253,15 @@
                                 <div class="form-group">
                                     <label>选择数据库</label>
                                     <div class="btn-group">
-                                        <label :class="{ active: database.engine === 'postgres' }"><input type="radio" name="database" value="postgres" v-model="database.engine">PostgreSQL</label>
-                                        <label :class="{ active: database.engine === 'mysql' }"><input type="radio" name="database" value="mysql" v-model="database.engine">MySQL</label>
-                                        <label :class="{ active: database.engine === 'sqlite' }"><input type="radio" name="database" value="sqlite" v-model="database.engine">SQLite3</label>
+                                        <label :class="{ active: database.engine === 'postgres' }">
+                                            <input type="radio" name="database" value="postgres" v-model="database.engine">PostgreSQL
+                                        </label>
+                                        <label :class="{ active: database.engine === 'mysql' }">
+                                            <input type="radio" name="database" value="mysql" v-model="database.engine">MySQL
+                                        </label>
+                                        <label :class="{ active: database.engine === 'sqlite' }">
+                                            <input type="radio" name="database" value="sqlite" v-model="database.engine">SQLite3
+                                        </label>
                                     </div>
                                 </div>
                             </div>
@@ -244,13 +270,13 @@
                             <div class="col-4">
                                 <div class="form-group">
                                     <label>数据库地址</label>
-                                    <input type="text" placeholder="请输入数据库地址" v-model="database.host">
+                                    <input type="text" name="host" placeholder="请输入数据库地址" v-model="database.host" v-validate="validates.database.host" data-vv-scope="base">
                                 </div>
                             </div>
                             <div class="col-4">
                                 <div class="form-group">
                                     <label>数据库名称</label>
-                                    <input type="text" placeholder="请输入数据库名称" v-model="database.database">
+                                    <input type="text" name="database" placeholder="请输入数据库名称" v-model="database.database" v-validate="validates.database.database" data-vv-scope="base">
                                 </div>
                             </div>
                         </div>
@@ -258,13 +284,13 @@
                             <div class="col-4">
                                 <div class="form-group">
                                     <label>数据库用户名</label>
-                                    <input type="text" placeholder="请输入数据库用户名" v-model="database.username">
+                                    <input type="text" name="username" placeholder="请输入数据库用户名" v-model="database.username" v-validate="validates.database.username" data-vv-scope="base">
                                 </div>
                             </div>
                             <div class="col-4">
                                 <div class="form-group">
                                     <label>数据库密码</label>
-                                    <input type="text" placeholder="请输入数据库密码" v-model="database.password">
+                                    <input type="text" name="password" placeholder="请输入数据库密码" v-model="database.password" v-validate="validates.database.password" data-vv-scope="base">
                                 </div>
                             </div>
                         </div>
@@ -273,7 +299,7 @@
                                 <button type="submit" @click="previous">上一步</button>
                             </div>
                             <div class="col-4">
-                                <button type="submit" @click="setDatabase" :disabled="steps.success === false">下一步</button>
+                                <button type="submit" @click="setDatabase" :disabled="steps.success === false || errors.any('base')">下一步</button>
                             </div>
                         </div>
                     </div>
