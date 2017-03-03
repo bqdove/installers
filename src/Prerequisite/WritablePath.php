@@ -37,9 +37,16 @@ class WritablePath extends Prerequisite
     {
         foreach ($this->paths as $path) {
             if (!is_writable($path)) {
-                $this->errors[] = [
-                    'message' => 'The ' . realpath($path) . ' directory is not writable.',
-                    'detail' => 'Please chmod this directory' . ($path !== public_path() ? ' and its contents' : '') . ' to 0775.',
+                $this->messages[] = [
+                    'type' => 'error',
+                    'detail' => '',
+                    'help' => '',
+                    'message' => '目录 ' . realpath($path) . ' 不可写！',
+                ];
+            } else {
+                $this->messages[] = [
+                    'type' => 'message',
+                    'message' => '目录权限检测通过，路径 ' . realpath($path) . ' 可写。',
                 ];
             }
         }

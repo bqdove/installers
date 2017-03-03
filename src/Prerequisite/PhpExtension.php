@@ -37,9 +37,16 @@ class PhpExtension extends Prerequisite
     {
         foreach ($this->extensions as $extension) {
             if (!extension_loaded($extension)) {
-                $this->errors[] = [
-                    'message' => "The PHP extension '{$extension}' is required.",
-                    'detail' => "The PHP extension '{$extension}' is required.",
+                $this->messages[] = [
+                    'type' => 'error',
+                    'detail' => '',
+                    'help' => '',
+                    'message' => "必须安装 PHP 扩展 '{$extension}'！",
+                ];
+            } else {
+                $this->messages[] = [
+                    'type' => 'message',
+                    'message' => "PHP 扩展 '{$extension}' 已经安装。",
                 ];
             }
         }

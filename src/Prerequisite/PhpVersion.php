@@ -36,9 +36,16 @@ class PhpVersion extends Prerequisite
     public function check()
     {
         if (version_compare(PHP_VERSION, $this->minVersion, '<')) {
-            $this->errors[] = [
-                'message' => "PHP {$this->minVersion} is required.",
-                'detail' => 'You are running version ' . PHP_VERSION . '. Talk to your hosting provider about upgrading to the latest PHP version.',
+            $this->messages[] = [
+                'type' => 'error',
+                'detail' => '',
+                'help' => '',
+                'message' => "PHP 版本必须至少为 {$this->minVersion} ，当前运行版本为 " . PHP_VERSION . " ！",
+            ];
+        } else {
+            $this->messages[] = [
+                'type' => 'message',
+                'message' => "PHP 版本检测通过，当前运行版本为 " . PHP_VERSION . " ！",
             ];
         }
     }

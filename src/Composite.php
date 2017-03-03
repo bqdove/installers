@@ -49,10 +49,10 @@ class Composite implements Prerequisite
      *
      * @return mixed
      */
-    public function getErrors()
+    public function getMessages()
     {
         return collect($this->prerequisites)->map(function (Prerequisite $prerequisite) {
-            return $prerequisite->getErrors();
+            return $prerequisite->getMessages();
         })->reduce('array_merge', []);
     }
 }

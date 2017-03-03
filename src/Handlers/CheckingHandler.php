@@ -64,9 +64,7 @@ class CheckingHandler extends DataHandler
     public function data()
     {
         $this->prerequisite->check();
-        return [
-            'errors' => $this->prerequisite->getErrors(),
-        ];
+        return $this->prerequisite->getMessages();
     }
 
     /**

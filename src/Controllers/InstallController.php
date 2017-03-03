@@ -50,7 +50,7 @@ class InstallController extends Controller
     public function index()
     {
         $this->prerequisite->check();
-        $errors = $this->prerequisite->getErrors();
+        $errors = $this->prerequisite->getMessages();
         if (count($errors)) {
             $this->share('errors', $errors);
 
