@@ -27,7 +27,7 @@
     <div class="install-wrap">
         <div class="install-header">
             <div class="container">
-                <span>当前版本：beta 1</span>
+                <span>当前版本：beta 2</span>
             </div>
         </div>
         <div class="container">
@@ -48,6 +48,78 @@
                     <div class="step">
                         <span>4</span>
                         <em>获取结果</em>
+                    </div>
+                </div>
+                <div class="step-content">
+                    <div class="form-horizontal">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="check-info">
+                                    <div class="check-header">01</div>
+                                    <div class="check-wrap">
+                                        <div class="check-content">
+                                            <p>这是一段成功信息！</p>
+                                        </div>
+                                        <div class="check-footer">
+                                            <div class="check-status success">成功</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="check-info">
+                                    <div class="check-header">02</div>
+                                    <div class="check-wrap">
+                                        <div class="check-content">
+                                            <p>这是一段错误信息！</p>
+                                        </div>
+                                        <div class="check-footer">
+                                            <div class="check-status error">失败</div>
+                                            <div class="check-extend">
+                                                <a href="https://notadd.com" class="error">错误原因</a>
+                                                <span>|</span>
+                                                <a href="https://notadd.com" class="help">获取帮助</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="check-info">
+                                    <div class="check-header">03</div>
+                                    <div class="check-wrap">
+                                        <div class="check-content">
+                                            <p>这是一段错误信息！</p>
+                                        </div>
+                                        <div class="check-footer">
+                                            <div class="check-status error">失败</div>
+                                            <div class="check-extend">
+                                                <a href="https://notadd.com" class="error">错误原因</a>
+                                                <span>|</span>
+                                                <a href="https://notadd.com" class="help">获取帮助</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="check-info">
+                                    <div class="check-header">04</div>
+                                    <div class="check-wrap">
+                                        <div class="check-content">
+                                            <p>这是一段错误信息！</p>
+                                        </div>
+                                        <div class="check-footer">
+                                            <div class="check-status error">失败</div>
+                                            <div class="check-extend">
+                                                <a href="https://notadd.com" class="error">错误原因</a>
+                                                <span>|</span>
+                                                <a href="https://notadd.com" class="help">获取帮助</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-4">
+                                <button type="submit">下一步</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="step-content">
