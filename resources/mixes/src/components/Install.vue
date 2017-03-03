@@ -18,7 +18,28 @@
           administration: 'http://notadd.dev/admin',
           frontend: 'http://notadd.dev',
         },
-        sitename: ''
+        sitename: '',
+        steps: {
+          current: 1
+        }
+      }
+    },
+    methods: {
+      check: function () {
+        let _this = this
+        _this.steps.current = 2
+      },
+      previous: function () {
+        let _this = this
+        _this.steps.current --
+      },
+      setDatabase: function () {
+        let _this = this
+        _this.steps.current = 3
+      },
+      setAccount: function () {
+        let _this = this
+        _this.steps.current = 4
       }
     }
   }
@@ -50,7 +71,7 @@
                         <em>获取结果</em>
                     </div>
                 </div>
-                <div class="step-content">
+                <div class="step-content" v-if="steps.current === 1">
                     <div class="form-horizontal">
                         <div class="row">
                             <div class="col-12">
@@ -117,12 +138,15 @@
                         </div>
                         <div class="row">
                             <div class="col-4">
-                                <button type="submit">下一步</button>
+                                <button type="submit" @click="previous">上一步</button>
+                            </div>
+                            <div class="col-4">
+                                <button type="submit" @click="check">下一步</button>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="step-content">
+                <div class="step-content" v-if="steps.current === 2">
                     <h1>填写设置基本数据项</h1>
                     <div class="form-horizontal">
                         <div class="row">
@@ -175,12 +199,15 @@
                         </div>
                         <div class="row">
                             <div class="col-4">
-                                <button type="submit">下一步</button>
+                                <button type="submit" @click="previous">上一步</button>
+                            </div>
+                            <div class="col-4">
+                                <button type="submit" @click="setDatabase">下一步</button>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="step-content">
+                <div class="step-content" v-if="steps.current === 3">
                     <h1>填写账户设置</h1>
                     <div class="form-horizontal">
                         <div class="row">
@@ -207,12 +234,15 @@
                         </div>
                         <div class="row">
                             <div class="col-4">
-                                <button type="submit">安装</button>
+                                <button type="submit" @click="previous">上一步</button>
+                            </div>
+                            <div class="col-4">
+                                <button type="submit" @click="setAccount">安装</button>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="step-content">
+                <div class="step-content" v-if="steps.current === 4">
                     <h1 class="success">恭喜你！安装成功！</h1>
                     <div class="form-horizontal">
                         <div class="row">
