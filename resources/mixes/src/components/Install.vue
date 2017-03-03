@@ -1,8 +1,10 @@
 <script>
   import Scrollbar from 'vue2-scrollbar'
+  import TopProgress from './Progress'
   export default {
     components: {
-      Scrollbar
+      Scrollbar,
+      TopProgress
     },
     data () {
       return {
@@ -57,21 +59,28 @@
       setAccept: function () {
         let _this = this
         window.scrollTo(0, 0)
-        _this.steps.current = 1
+        _this.$refs.progress.start()
+        _this.http.post('http://notadd.dev/checking').then((response) => {
+          _this.steps.current = 1
+          _this.$refs.progress.done()
+        })
       },
       setAccount: function () {
         let _this = this
         window.scrollTo(0, 0)
+        _this.$refs.progress.start()
         _this.steps.current = 4
       },
       setCheck: function () {
         let _this = this
         window.scrollTo(0, 0)
+        _this.$refs.progress.start()
         _this.steps.current = 2
       },
       setDatabase: function () {
         let _this = this
         window.scrollTo(0, 0)
+        _this.$refs.progress.start()
         _this.steps.current = 3
       }
     }
@@ -79,6 +88,7 @@
 </script>
 <template>
     <div class="install-wrap">
+        <top-progress color="#bde2fd" ref="progress"></top-progress>
         <div class="install-header">
             <div class="container">
                 <span>当前版本：beta 2</span>

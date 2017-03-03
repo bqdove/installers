@@ -7,8 +7,10 @@ import router from './router'
 Vue.debug = true
 Vue.config.productionTip = false
 Vue.http = notadd.http
-Object.defineProperty(Vue.prototype, '$http', () => {
-  return notadd.http
+Object.defineProperty(Vue.prototype, 'http', {
+  get: function () {
+    return notadd.http
+  }
 })
 
 notadd.instance = new Vue({
