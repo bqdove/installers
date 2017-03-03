@@ -14,6 +14,7 @@
           password: '',
           username: ''
         },
+        checking: [],
         database: {
           database: '',
           engine: 'postgres',
@@ -60,9 +61,19 @@
         let _this = this
         window.scrollTo(0, 0)
         _this.$refs.progress.start()
-        _this.http.post('http://notadd.dev/checking').then((response) => {
+        _this.http.post('http://notadd.dev/api/checking').then((response) => {
+          _this.checking = response.data.data
+          _this.checking.forEach((check) => {
+            if (check.type === 'error') {
+              _this.steps.success = false
+            }
+          })
+          if (_this.steps.success) {
+            _this.$refs.progress.done()
+          } else {
+            _this.$refs.progress.fail()
+          }
           _this.steps.current = 1
-          _this.$refs.progress.done()
         })
       },
       setAccount: function () {
@@ -74,7 +85,6 @@
       setCheck: function () {
         let _this = this
         window.scrollTo(0, 0)
-        _this.$refs.progress.start()
         _this.steps.current = 2
       },
       setDatabase: function () {
@@ -82,6 +92,17 @@
         window.scrollTo(0, 0)
         _this.$refs.progress.start()
         _this.steps.current = 3
+      }
+    },
+    watch: {
+      'steps.current': {
+        deep: true,
+        handler: function (val) {
+          let _this = this
+          if (val === 0) {
+            _this.steps.success = true
+          }
+        }
       }
     }
   }
@@ -166,61 +187,19 @@
                     <div class="form-horizontal">
                         <div class="row">
                             <div class="col-12">
-                                <div class="check-info">
-                                    <div class="check-header">01</div>
+                                <div class="check-info" v-for="(check, index) in checking">
+                                    <div class="check-header">{{ '0' + index }}</div>
                                     <div class="check-wrap">
                                         <div class="check-content">
-                                            <p>这是一段成功信息！</p>
+                                            <p>{{ check.message }}</p>
                                         </div>
                                         <div class="check-footer">
-                                            <div class="check-status success">成功</div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="check-info">
-                                    <div class="check-header">02</div>
-                                    <div class="check-wrap">
-                                        <div class="check-content">
-                                            <p>这是一段错误信息！</p>
-                                        </div>
-                                        <div class="check-footer">
-                                            <div class="check-status error">失败</div>
-                                            <div class="check-extend">
-                                                <a href="https://notadd.com" class="error">错误原因</a>
+                                            <div class="check-status success" v-if="check.type === 'message'">成功</div>
+                                            <div class="check-status error" v-if="check.type === 'error'">失败</div>
+                                            <div class="check-extend" v-if="check.type === 'error'">
+                                                <a :href="check.detail" class="error">错误原因</a>
                                                 <span>|</span>
-                                                <a href="https://notadd.com" class="help">获取帮助</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="check-info">
-                                    <div class="check-header">03</div>
-                                    <div class="check-wrap">
-                                        <div class="check-content">
-                                            <p>这是一段错误信息！</p>
-                                        </div>
-                                        <div class="check-footer">
-                                            <div class="check-status error">失败</div>
-                                            <div class="check-extend">
-                                                <a href="https://notadd.com" class="error">错误原因</a>
-                                                <span>|</span>
-                                                <a href="https://notadd.com" class="help">获取帮助</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="check-info">
-                                    <div class="check-header">04</div>
-                                    <div class="check-wrap">
-                                        <div class="check-content">
-                                            <p>这是一段错误信息！</p>
-                                        </div>
-                                        <div class="check-footer">
-                                            <div class="check-status error">失败</div>
-                                            <div class="check-extend">
-                                                <a href="https://notadd.com" class="error">错误原因</a>
-                                                <span>|</span>
-                                                <a href="https://notadd.com" class="help">获取帮助</a>
+                                                <a :href="check.help" class="help">获取帮助</a>
                                             </div>
                                         </div>
                                     </div>
@@ -228,11 +207,12 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-4">
+                            <div class="col-4" v-if="steps.success === true">
                                 <button type="submit" @click="previous">上一步</button>
                             </div>
                             <div class="col-4">
-                                <button type="submit" @click="setCheck" :disabled="steps.success === false">下一步</button>
+                                <button type="submit" @click="setCheck" v-if="steps.success === true">下一步</button>
+                                <button type="submit" @click="previous" v-if="steps.success === false">返回重新检测</button>
                             </div>
                         </div>
                     </div>
