@@ -20,7 +20,26 @@
         },
         sitename: '',
         steps: {
-          current: 1
+          current: 1,
+          list: [
+            {
+              number: 1,
+              text: '检测环境'
+            },
+            {
+              number: 2,
+              text: '设置数据'
+            },
+            {
+              number: 3,
+              text: '设置账户'
+            },
+            {
+              number: 4,
+              text: '获取结果'
+            },
+          ],
+          success: true
         }
       }
     },
@@ -54,21 +73,9 @@
         <div class="container">
             <div class="install-content">
                 <div class="step-header">
-                    <div class="step success">
-                        <span>1</span>
-                        <em>检测环境</em>
-                    </div>
-                    <div class="step error">
-                        <span>2</span>
-                        <em>设置数据</em>
-                    </div>
-                    <div class="step active">
-                        <span>3</span>
-                        <em>设置账户</em>
-                    </div>
-                    <div class="step">
-                        <span>4</span>
-                        <em>获取结果</em>
+                    <div class="step" :class="{ active: step.number === steps.current, success: steps.success, error: !steps.success }" v-for="step in steps.list">
+                        <span>{{ step.number }}</span>
+                        <em>{{ step.text }}</em>
                     </div>
                 </div>
                 <div class="step-content" v-if="steps.current === 1">
@@ -141,7 +148,7 @@
                                 <button type="submit" @click="previous">上一步</button>
                             </div>
                             <div class="col-4">
-                                <button type="submit" @click="check">下一步</button>
+                                <button type="submit" @click="check" :disabled="steps.success === false">下一步</button>
                             </div>
                         </div>
                     </div>
@@ -202,7 +209,7 @@
                                 <button type="submit" @click="previous">上一步</button>
                             </div>
                             <div class="col-4">
-                                <button type="submit" @click="setDatabase">下一步</button>
+                                <button type="submit" @click="setDatabase" :disabled="steps.success === false">下一步</button>
                             </div>
                         </div>
                     </div>
@@ -237,7 +244,7 @@
                                 <button type="submit" @click="previous">上一步</button>
                             </div>
                             <div class="col-4">
-                                <button type="submit" @click="setAccount">安装</button>
+                                <button type="submit" @click="setAccount" :disabled="steps.success === false">安装</button>
                             </div>
                         </div>
                     </div>
