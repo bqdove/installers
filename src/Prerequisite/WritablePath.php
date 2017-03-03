@@ -35,20 +35,26 @@ class WritablePath extends Prerequisite
      */
     public function check()
     {
+        $isWritable = collect();
+        $notWritable = collect();
         foreach ($this->paths as $path) {
             if (!is_writable($path)) {
-                $this->messages[] = [
-                    'type' => 'error',
-                    'detail' => '',
-                    'help' => '',
-                    'message' => '目录 ' . realpath($path) . ' 不可写！',
-                ];
+                $notWritable->push(realpath($path));
+
             } else {
-                $this->messages[] = [
-                    'type' => 'message',
-                    'message' => '目录权限检测通过，路径 ' . realpath($path) . ' 可写。',
-                ];
+                $isWritable->push(realpath($path));
+
             }
         }
+        $isWritable->count() && $this->messages[] = [
+            'type' => 'message',
+            'message' => "目录权限检测通过，路径 '" . $isWritable->implode("', '") . "' 可写。",
+        ];
+        $notWritable->count() && $this->messages[] = [
+            'type' => 'error',
+            'detail' => '',
+            'help' => '',
+            'message' => "目录 '" . $notWritable->implode("', '") . "' 不可写！",
+        ];
     }
 }
