@@ -58,6 +58,7 @@ class InstallerServiceProvider extends ServiceProvider
             $this->app->make('router')->resource('/', InstallController::class);
             $this->app->make('router')->group(['middleware' => ['cross', 'web'], 'prefix' => 'api'], function () {
                 $this->app->make('router')->post('check', InstallApiController::class . '@check');
+                $this->app->make('router')->post('install', InstallApiController::class . '@install');
             });
         }
         $this->commands([
