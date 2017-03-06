@@ -99,8 +99,14 @@
         }
         _this.$refs.progress.start()
         _this.http.post('http://notadd.dev/api/install', {
-          account: _this.account,
-          database: _this.database,
+          account_mail: _this.account.mail,
+          account_password: _this.account.password,
+          account_username: _this.account.username,
+          database_engine: _this.database.engine,
+          database_host: _this.database.host,
+          database_name: _this.database.database,
+          database_password: _this.database.password,
+          database_username: _this.database.username,
           sitename: _this.sitename
         }).then((response) => {
           console.log(response)
@@ -339,13 +345,13 @@
                         <div class="row">
                             <div class="col-4">
                                 <div class="form-group" :class="{ error: errors.has('account.username') }">
-                                    <label>账户</label>
+                                    <label>管理员账号</label>
                                     <input type="text" name="username" placeholder="请输入管理员账号" v-model="account.username" v-validate="validates.account.username" data-vv-scope="account">
                                 </div>
                             </div>
                             <div class="col-4">
                                 <div class="form-group" :class="{ error: errors.has('account.password') }">
-                                    <label>密码</label>
+                                    <label>管理员密码</label>
                                     <input type="text" name="password" placeholder="请输入管理员密码" v-model="account.password" v-validate="validates.account.password" data-vv-scope="account">
                                 </div>
                             </div>
