@@ -105,7 +105,10 @@
       setDatabase: function () {
         let _this = this
         _this.$validator.validateAll('base')
-//        _this.steps.current = 3
+        if (_this.errors.any()) {
+          return false
+        }
+        _this.steps.current = 3
       }
     },
     watch: {
@@ -118,6 +121,7 @@
       'steps.current': {
         deep: true,
         handler: function (val) {
+          console.log(val)
           let _this = this
           if (val === 0) {
             _this.steps.success = true
@@ -242,7 +246,7 @@
                     <div class="form-horizontal">
                         <div class="row">
                             <div class="col-4">
-                                <div class="form-group">
+                                <div class="form-group" :class="{ error: errors.has('base.sitename') }">
                                     <label>您的网站名称</label>
                                     <input type="text" name="sitename" placeholder="请输入网站名称" v-model="sitename" v-validate="validates.sitename" data-vv-scope="base">
                                 </div>
@@ -268,13 +272,13 @@
                         </div>
                         <div class="row">
                             <div class="col-4">
-                                <div class="form-group">
+                                <div class="form-group" :class="{ error: errors.has('base.host') }">
                                     <label>数据库地址</label>
                                     <input type="text" name="host" placeholder="请输入数据库地址" v-model="database.host" v-validate="validates.database.host" data-vv-scope="base">
                                 </div>
                             </div>
                             <div class="col-4">
-                                <div class="form-group">
+                                <div class="form-group" :class="{ error: errors.has('base.database') }">
                                     <label>数据库名称</label>
                                     <input type="text" name="database" placeholder="请输入数据库名称" v-model="database.database" v-validate="validates.database.database" data-vv-scope="base">
                                 </div>
@@ -282,13 +286,13 @@
                         </div>
                         <div class="row">
                             <div class="col-4">
-                                <div class="form-group">
+                                <div class="form-group" :class="{ error: errors.has('base.username') }">
                                     <label>数据库用户名</label>
                                     <input type="text" name="username" placeholder="请输入数据库用户名" v-model="database.username" v-validate="validates.database.username" data-vv-scope="base">
                                 </div>
                             </div>
                             <div class="col-4">
-                                <div class="form-group">
+                                <div class="form-group" :class="{ error: errors.has('base.password') }">
                                     <label>数据库密码</label>
                                     <input type="text" name="password" placeholder="请输入数据库密码" v-model="database.password" v-validate="validates.database.password" data-vv-scope="base">
                                 </div>
