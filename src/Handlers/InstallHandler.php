@@ -38,13 +38,18 @@ class InstallHandler extends SetHandler
      * Data for handler.
      *
      * @return array|string
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
     public function data()
     {
         if ($this->error) {
             return $this->error;
         } else {
-            return $this->request->all();
+            return [
+                'all' => $this->request->all(),
+                'administration' => url('admin'),
+                'frontend' => url(''),
+            ];
         }
     }
 

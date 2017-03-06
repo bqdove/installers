@@ -22,9 +22,10 @@
           password: '',
           username: 'root'
         },
+        message: '',
         result: {
-          administration: 'http://notadd.dev/admin',
-          frontend: 'http://notadd.dev',
+          administration: '',
+          frontend: '',
         },
         sitename: '',
         steps: {
@@ -110,8 +111,17 @@
           sitename: _this.sitename
         }).then((response) => {
           console.log(response)
-        }).catch((error) => {
-          console.log(error)
+          let data = response.data
+          if (data.code !== 200) {
+            _this.$refs.progress.fail()
+            _this.steps.success =false
+            _this.message = data.data.message
+          } else {
+            _this.$refs.progress.done()
+            _this.result.administration = data.data.administration
+            _this.result.frontend = data.data.frontend
+            _this.steps.current = 4
+          }
         })
       },
       setCheck: function () {
@@ -140,6 +150,7 @@
           if (_this.steps.current === 3) {
             _this.steps.success = !val.any('account');
           }
+          _this.message = ''
         }
       },
       'steps.current': {
@@ -353,6 +364,13 @@
                                 <div class="form-group" :class="{ error: errors.has('account.password') }">
                                     <label>管理员密码</label>
                                     <input type="text" name="password" placeholder="请输入管理员密码" v-model="account.password" v-validate="validates.account.password" data-vv-scope="account">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" v-if="message.length > 0">
+                            <div class="col-12">
+                                <div class="form-group error">
+                                    <p>{{ message }}</p>
                                 </div>
                             </div>
                         </div>
