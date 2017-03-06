@@ -9,13 +9,21 @@
 namespace Notadd\Installer\Handlers;
 
 use Illuminate\Container\Container;
+use Illuminate\Contracts\Console\Kernel;
 use Notadd\Foundation\Passport\Abstracts\SetHandler;
+use Symfony\Component\Console\Input\ArrayInput;
+use Symfony\Component\Console\Output\BufferedOutput;
 
 /**
  * Class InstallHandler.
  */
 class InstallHandler extends SetHandler
 {
+    /**
+     * @var string
+     */
+    protected $error = '';
+
     /**
      * InstallHandler constructor.
      *
@@ -29,12 +37,15 @@ class InstallHandler extends SetHandler
     /**
      * Data for handler.
      *
-     * @return array
+     * @return array|string
      */
     public function data()
     {
-        return $this->request->all();
-        return [];
+        if ($this->error) {
+            return $this->error;
+        } else {
+            return $this->request->all();
+        }
     }
 
     /**
@@ -79,7 +90,48 @@ class InstallHandler extends SetHandler
             'database_username.required' => '必须填写数据库用户名',
             'sitename.required' => '必须填写网站名称',
         ]);
+        $command = $this->getCommand('install');
+        $command->setDataFromController($this->request->all());
+        $input = new ArrayInput([]);
+        $output = new BufferedOutput();
+        try {
+            $command->run($input, $output);
+        } catch (\Exception $exception) {
+            $this->code = $exception->getCode();
+            $this->error = [
+                'message' => $exception->getMessage(),
+                'trace' => $exception->getTrace(),
+            ];
+        }
+
         return true;
+    }
+
+    /**
+     * Get a command from console instance.
+     *
+     * @param string $name
+     *
+     * @return \Notadd\Foundation\Console\Abstracts\Command|\Symfony\Component\Console\Command\Command
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
+     */
+    protected function getCommand($name)
+    {
+        return $this->getConsole()->get($name);
+    }
+
+    /**
+     * Get console instance.
+     *
+     * @return \Illuminate\Contracts\Console\Kernel|\Notadd\Foundation\Console\Application
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
+     */
+    protected function getConsole()
+    {
+        $kernel = $this->container->make(Kernel::class);
+        $kernel->bootstrap();
+
+        return $kernel->getArtisan();
     }
 
     /**
