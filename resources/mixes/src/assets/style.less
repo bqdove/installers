@@ -112,6 +112,14 @@ body {
           width: 44px;
         }
         &.active {
+          &.error {
+            > em {
+              color: #d94343;
+            }
+            > span {
+              background-color: #d94343;
+            }
+          }
           > em {
             color: #5a5a5a;
           }
@@ -262,6 +270,15 @@ body {
         }
         .form-group {
           margin-bottom: 25px;
+          &.error {
+            > input {
+              box-shadow: 6px 4px 16px 0 rgba(217, 67, 67, 0.26);
+              color: #d94343;
+            }
+            > label {
+              color: #d94343;
+            }
+          }
           > a {
             box-shadow: 6px 4px 16px 0 rgba(0, 0, 0, 0.06);
             color: #b0b0b0;

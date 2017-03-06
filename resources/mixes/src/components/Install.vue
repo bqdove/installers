@@ -116,6 +116,9 @@
         deep: true,
         handler: function (val) {
           console.log(val)
+          console.log(val.any('base'))
+          let _this = this
+          _this.steps.success = !val.any('base');
         }
       },
       'steps.current': {
