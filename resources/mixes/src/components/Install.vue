@@ -9,8 +9,8 @@
     data () {
       return {
         accept: false,
-        administration: {
-          email: '',
+        account: {
+          mail: '',
           password: '',
           username: ''
         },
@@ -50,8 +50,8 @@
           success: true
         },
         validates: {
-          administration: {
-            email: 'required|email',
+          account: {
+            mail: 'required|email',
             password: 'required',
             username: 'required'
           },
@@ -93,9 +93,18 @@
       },
       setAccount: function () {
         let _this = this
-        window.scrollTo(0, 0)
+        _this.$validator.validateAll('account')
+        if (_this.errors.any('account')) {
+          return false
+        }
         _this.$refs.progress.start()
-        _this.steps.current = 4
+        _this.http.post('http://notadd.dev/api/install', {
+          account: _this.account,
+          database: _this.database,
+          sitename: _this.sitename
+        }).then((response) => {
+          console.log(response)
+        })
       },
       setCheck: function () {
         let _this = this
@@ -105,9 +114,10 @@
       setDatabase: function () {
         let _this = this
         _this.$validator.validateAll('base')
-        if (_this.errors.any()) {
+        if (_this.errors.any('base')) {
           return false
         }
+        window.scrollTo(0, 0)
         _this.steps.current = 3
       }
     },
@@ -115,16 +125,18 @@
       errors: {
         deep: true,
         handler: function (val) {
-          console.log(val)
-          console.log(val.any('base'))
           let _this = this
-          _this.steps.success = !val.any('base');
+          if (_this.steps.current === 2) {
+            _this.steps.success = !val.any('base');
+          }
+          if (_this.steps.current === 3) {
+            _this.steps.success = !val.any('account');
+          }
         }
       },
       'steps.current': {
         deep: true,
         handler: function (val) {
-          console.log(val)
           let _this = this
           if (val === 0) {
             _this.steps.success = true
@@ -289,15 +301,15 @@
                         </div>
                         <div class="row">
                             <div class="col-4">
-                                <div class="form-group" :class="{ error: errors.has('base.username') }">
+                                <div class="form-group" :class="{ error: errors.has('base.database_username') }">
                                     <label>数据库用户名</label>
-                                    <input type="text" name="username" placeholder="请输入数据库用户名" v-model="database.username" v-validate="validates.database.username" data-vv-scope="base">
+                                    <input type="text" name="database_username" placeholder="请输入数据库用户名" v-model="database.username" v-validate="validates.database.username" data-vv-scope="base">
                                 </div>
                             </div>
                             <div class="col-4">
-                                <div class="form-group" :class="{ error: errors.has('base.password') }">
+                                <div class="form-group" :class="{ error: errors.has('base.database_password') }">
                                     <label>数据库密码</label>
-                                    <input type="text" name="password" placeholder="请输入数据库密码" v-model="database.password" v-validate="validates.database.password" data-vv-scope="base">
+                                    <input type="text" name="database_password" placeholder="请输入数据库密码" v-model="database.password" v-validate="validates.database.password" data-vv-scope="base">
                                 </div>
                             </div>
                         </div>
@@ -316,23 +328,23 @@
                     <div class="form-horizontal">
                         <div class="row">
                             <div class="col-4">
-                                <div class="form-group">
+                                <div class="form-group" :class="{ error: errors.has('account.mail') }">
                                     <label>管理员邮箱</label>
-                                    <input type="text" placeholder="请输入管理员邮箱" v-model="administration.email">
+                                    <input type="text" name="mail" placeholder="请输入管理员邮箱" v-model="account.mail" v-validate="validates.account.mail" data-vv-scope="account">
                                 </div>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-4">
-                                <div class="form-group">
+                                <div class="form-group" :class="{ error: errors.has('account.username') }">
                                     <label>账户</label>
-                                    <input type="text" placeholder="请输入管理员账号" v-model="administration.username">
+                                    <input type="text" name="username" placeholder="请输入管理员账号" v-model="account.username" v-validate="validates.account.username" data-vv-scope="account">
                                 </div>
                             </div>
                             <div class="col-4">
-                                <div class="form-group">
+                                <div class="form-group" :class="{ error: errors.has('account.password') }">
                                     <label>密码</label>
-                                    <input type="text" placeholder="请输入管理员密码" v-model="administration.password">
+                                    <input type="text" name="password" placeholder="请输入管理员密码" v-model="account.password" v-validate="validates.account.password" data-vv-scope="account">
                                 </div>
                             </div>
                         </div>
@@ -341,7 +353,7 @@
                                 <button type="submit" @click="previous">上一步</button>
                             </div>
                             <div class="col-4">
-                                <button type="submit" @click="setAccount" :disabled="steps.success === false">安装</button>
+                                <button type="submit" @click="setAccount" :disabled="steps.success === false || errors.any('account')">安装</button>
                             </div>
                         </div>
                     </div>
@@ -353,7 +365,7 @@
                             <div class="col-4">
                                 <div class="form-group">
                                     <label>后台管理地址</label>
-                                    <a :href="result.administration" target="_blank">{{ result.administration }}</a>
+                                    <a :href="result.account" target="_blank">{{ result.administration }}</a>
                                 </div>
                             </div>
                             <div class="col-4">
@@ -367,13 +379,13 @@
                             <div class="col-4">
                                 <div class="form-group">
                                     <label>账户</label>
-                                    <input type="text" placeholder="未输入管理员账号" v-model="administration.username">
+                                    <input type="text" placeholder="未输入管理员账号" v-model="account.username">
                                 </div>
                             </div>
                             <div class="col-4">
                                 <div class="form-group">
                                     <label>密码</label>
-                                    <input type="text" placeholder="未输入管理员密码" v-model="administration.password">
+                                    <input type="text" placeholder="未输入管理员密码" v-model="account.password">
                                 </div>
                             </div>
                         </div>
