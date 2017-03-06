@@ -76,7 +76,7 @@
         let _this = this
         window.scrollTo(0, 0)
         _this.$refs.progress.start()
-        _this.http.post('http://notadd.dev/api/checking').then((response) => {
+        _this.http.post('http://notadd.dev/api/check').then((response) => {
           _this.checking = response.data.data
           _this.checking.forEach((check) => {
             if (check.type === 'error') {
@@ -104,6 +104,8 @@
           sitename: _this.sitename
         }).then((response) => {
           console.log(response)
+        }).catch((error) => {
+          console.log(error)
         })
       },
       setCheck: function () {

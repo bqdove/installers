@@ -57,7 +57,7 @@ class InstallerServiceProvider extends ServiceProvider
             $this->app->make(Dispatcher::class)->subscribe(CsrfTokenRegister::class);
             $this->app->make('router')->resource('/', InstallController::class);
             $this->app->make('router')->group(['middleware' => ['cross', 'web'], 'prefix' => 'api'], function () {
-                $this->app->make('router')->post('checking', InstallApiController::class . '@checking');
+                $this->app->make('router')->post('check', InstallApiController::class . '@check');
             });
         }
         $this->commands([

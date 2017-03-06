@@ -15,7 +15,7 @@ use Notadd\Installer\Contracts\Prerequisite;
 /**
  * Class CheckingHandler.
  */
-class CheckingHandler extends DataHandler
+class CheckHandler extends DataHandler
 {
     /**
      * @var \Notadd\Installer\Contracts\Prerequisite

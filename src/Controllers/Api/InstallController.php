@@ -9,7 +9,7 @@
 namespace Notadd\Installer\Controllers\Api;
 
 use Notadd\Foundation\Routing\Abstracts\Controller;
-use Notadd\Installer\Handlers\CheckingHandler;
+use Notadd\Installer\Handlers\CheckHandler;
 
 /**
  * Class InstallController.
@@ -19,12 +19,12 @@ class InstallController extends Controller
     /**
      * Checking handler.
      *
-     * @param \Notadd\Installer\Handlers\CheckingHandler $handler
+     * @param \Notadd\Installer\Handlers\CheckHandler $handler
      *
      * @return \Notadd\Foundation\Passport\Responses\ApiResponse|\Psr\Http\Message\ResponseInterface|\Zend\Diactoros\Response
      * @throws \Exception
      */
-    public function checking(CheckingHandler $handler)
+    public function check(CheckHandler $handler)
     {
         return $handler->toResponse()->generateHttpResponse();
     }
