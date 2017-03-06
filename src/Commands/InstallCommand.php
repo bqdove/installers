@@ -205,17 +205,17 @@ class InstallCommand extends Command
      */
     public function setDataFromController(array $data)
     {
-        $this->data->put('driver', $data['driver']);
+        $this->data->put('driver', $data['database_engine']);
         $this->data->put('database_host', $data['database_host']);
-        $this->data->put('database', $data['database']);
+        $this->data->put('database', $data['database_name']);
         $this->data->put('database_username', $data['database_username']);
         $this->data->put('database_password', $data['database_password']);
-        $this->data->put('database_prefix', $data['database_prefix']);
-        $this->data->put('admin_account', $data['admin_account']);
-        $this->data->put('admin_password', $data['admin_password']);
-        $this->data->put('admin_password_confirmation', $data['admin_password_confirmation']);
-        $this->data->put('admin_email', $data['admin_email']);
-        $this->data->put('website', $data['website']);
+        // $this->data->put('database_prefix', $data['database_prefix']);
+        $this->data->put('admin_account', $data['account_username']);
+        $this->data->put('admin_password', $data['account_password']);
+//        $this->data->put('admin_password_confirmation', $data['admin_password_confirmation']);
+        $this->data->put('admin_email', $data['account_mail']);
+        $this->data->put('website', $data['sitename']);
         $this->isDataSetted = true;
     }
 
