@@ -61,7 +61,7 @@ class InstallHandler extends SetHandler
     public function errors()
     {
         return [
-            $this->translator->trans(''),
+            $this->translator->trans('install::install.fail'),
         ];
     }
 
@@ -147,7 +147,7 @@ class InstallHandler extends SetHandler
     public function messages()
     {
         return [
-            $this->translator->trans(''),
+            $this->translator->trans('install::install.success'),
         ];
     }
 }
