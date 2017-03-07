@@ -391,7 +391,7 @@
                             <div class="col-4">
                                 <div class="form-group">
                                     <label>后台管理地址</label>
-                                    <a :href="result.account" target="_blank">{{ result.administration }}</a>
+                                    <a :href="result.administration" target="_blank">{{ result.administration }}</a>
                                 </div>
                             </div>
                             <div class="col-4">
