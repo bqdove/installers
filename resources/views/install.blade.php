@@ -7,6 +7,10 @@
 </head>
 <body>
 <div id="app"></div>
+<script>
+    window.api = "{{ url('api') }}";
+    window.url = "{{ url('') }}";
+</script>
 <script type="text/javascript" src="{{ asset('assets/install/js/manifest.js') }}"></script>
 <script type="text/javascript" src="{{ asset('assets/install/js/vendor.js') }}"></script>
 <script type="text/javascript" src="{{ asset('assets/install/js/app.js') }}"></script>

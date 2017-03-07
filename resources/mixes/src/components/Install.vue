@@ -77,7 +77,7 @@
         let _this = this
         window.scrollTo(0, 0)
         _this.$refs.progress.start()
-        _this.http.post('http://notadd.dev/api/check').then((response) => {
+        _this.http.post(window.api + '/check').then((response) => {
           _this.checking = response.data.data
           _this.checking.forEach((check) => {
             if (check.type === 'error') {
@@ -99,7 +99,7 @@
           return false
         }
         _this.$refs.progress.start()
-        _this.http.post('http://notadd.dev/api/install', {
+        _this.http.post(window.api + '/install', {
           account_mail: _this.account.mail,
           account_password: _this.account.password,
           account_username: _this.account.username,
