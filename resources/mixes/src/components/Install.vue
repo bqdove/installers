@@ -112,17 +112,16 @@
                     sitename: self.sitename,
                 }).then(response => {
                     const data = response.data;
-                    if (data.code !== 200) {
-                        self.$refs.progress.fail();
-                        self.steps.success = false;
-                        self.message = data.data.message;
-                    } else {
-                        console.log(self.$validator);
-                        self.$refs.progress.done();
-                        self.result.administration = data.data.administration;
-                        self.result.frontend = data.data.frontend;
-                        self.steps.current = 4;
-                    }
+                    self.$refs.progress.done();
+                    self.result.administration = data.data.administration;
+                    self.result.frontend = data.data.frontend;
+                    self.steps.current = 4;
+                }).catch(error => {
+                    console.log(error.response);
+                    console.log(error.response.data);
+                    self.$refs.progress.fail();
+                    self.steps.success = false;
+                    self.message = error.response.data.data.message;
                 });
                 return true;
             },
