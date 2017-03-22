@@ -1,23 +1,24 @@
-import './assets/style.less'
-import Vue from 'vue'
-import VueValidate from 'vee-validate'
-import App from './App'
-import notadd from './notadd'
-import router from './router'
+import Vue from 'vue';
+import VueValidate from 'vee-validate';
 
-Vue.use(VueValidate)
+import './assets/style.less';
+import App from './App.vue';
+import notadd from './notadd';
+import router from './router';
 
-Vue.config.productionTip = false
-Vue.http = notadd.http
+Vue.use(VueValidate);
+
+Vue.config.productionTip = false;
+Vue.http = notadd.http;
 Object.defineProperty(Vue.prototype, 'http', {
-  get: function () {
-    return notadd.http
-  }
-})
+    get() {
+        return notadd.http;
+    },
+});
 
 notadd.instance = new Vue({
-  el: '#app',
-  router,
-  template: '<App/>',
-  components: { App }
-})
+    el: '#app',
+    router,
+    template: '<App/>',
+    components: { App },
+});
