@@ -104,6 +104,7 @@ class InstallCommand extends Command
                     'charset'   => 'utf8',
                     'collation' => 'utf8_unicode_ci',
                     'prefix'    => $this->data->get('database_prefix'),
+                    'port'   => $this->data->get('database_port') ?: 3306,
                     'strict'    => true,
                     'engine'    => null,
                 ]);
@@ -117,6 +118,7 @@ class InstallCommand extends Command
                     'password' => $this->data->get('database_password'),
                     'charset'  => 'utf8',
                     'prefix'   => $this->data->get('database_prefix'),
+                    'port'   => $this->data->get('database_port') ?: 5432,
                     'schema'   => 'public',
                     'sslmode'  => 'prefer',
                 ]);

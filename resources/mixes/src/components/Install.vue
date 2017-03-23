@@ -21,6 +21,7 @@
                     engine: 'pgsql',
                     host: 'localhost',
                     password: '',
+                    port: '5432',
                     username: 'root',
                 },
                 message: '',
@@ -108,6 +109,7 @@
                     database_host: self.database.host,
                     database_name: self.database.database,
                     database_password: self.database.password,
+                    database_port: self.database.port,
                     database_username: self.database.username,
                     sitename: self.sitename,
                 }).then(response => {
@@ -161,6 +163,22 @@
                     const self = this;
                     if (val === 0) {
                         self.steps.success = true;
+                    }
+                },
+            },
+            'database.engine': {
+                deep: true,
+                handler(val) {
+                    const self = this;
+                    switch (val) {
+                    case 'mysql':
+                        self.database.port = '3306';
+                        break;
+                    case 'pgsql':
+                        self.database.port = '5432';
+                        break;
+                    default:
+                        break;
                     }
                 },
             },
@@ -325,12 +343,18 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row">
+                        <div class="row" v-if="database.engine !== 'sqlite'">
                             <div class="col-4">
                                 <div class="form-group" :class="{ error: errors.has('host') }">
                                     <label>数据库地址</label>
                                     <input type="text" name="host" placeholder="请输入数据库地址" v-model="database.host"
                                            v-validate="validates.database.host">
+                                </div>
+                            </div>
+                            <div class="col-2">
+                                <div class="form-group">
+                                    <label>数据库端口</label>
+                                    <input type="text" name="host" placeholder="默认端口" v-model="database.port">
                                 </div>
                             </div>
                             <div class="col-4">
@@ -341,7 +365,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row">
+                        <div class="row" v-if="database.engine !== 'sqlite'">
                             <div class="col-4">
                                 <div class="form-group" :class="{ error: errors.has('database_username') }">
                                     <label>数据库用户名</label>
@@ -349,6 +373,7 @@
                                            v-model="database.username" v-validate="validates.database.username">
                                 </div>
                             </div>
+                            <div class="col-2"></div>
                             <div class="col-4">
                                 <div class="form-group" :class="{ error: errors.has('database_password') }">
                                     <label>数据库密码</label>
