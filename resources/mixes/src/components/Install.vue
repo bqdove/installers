@@ -18,7 +18,7 @@
                 checking: [],
                 database: {
                     database: '',
-                    engine: 'postgres',
+                    engine: 'pgsql',
                     host: 'localhost',
                     password: '',
                     username: 'root',
@@ -310,8 +310,8 @@
                                 <div class="form-group">
                                     <label>选择数据库</label>
                                     <div class="btn-group">
-                                        <label :class="{ active: database.engine === 'postgres' }">
-                                            <input type="radio" name="database" value="postgres"
+                                        <label :class="{ active: database.engine === 'pgsql' }">
+                                            <input type="radio" name="database" value="pgsql"
                                                    v-model="database.engine">PostgreSQL
                                         </label>
                                         <label :class="{ active: database.engine === 'mysql' }">
