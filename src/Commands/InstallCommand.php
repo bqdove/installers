@@ -11,6 +11,7 @@ namespace Notadd\Installer\Commands;
 use Illuminate\Contracts\Config\Repository;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Collection;
+use Notadd\Administration\ModuleServiceProvider;
 use Notadd\Foundation\Console\Abstracts\Command;
 use Notadd\Foundation\Member\Member;
 use Notadd\Foundation\Setting\Contracts\SettingsRepository;
@@ -132,6 +133,11 @@ class InstallCommand extends Command
                 touch($this->container->storagePath() . DIRECTORY_SEPARATOR . 'bootstraps' . DIRECTORY_SEPARATOR . 'database.sqlite');
                 break;
         }
+
+        if (class_exists(ModuleServiceProvider::class)) {
+            $this->container->getProvider(ModuleServiceProvider::class) || $this->container->register(ModuleServiceProvider::class);
+        }
+
         $this->call('migrate', [
             '--force' => true,
         ]);
@@ -147,6 +153,11 @@ class InstallCommand extends Command
             '--password' => true,
             '--name'     => 'Notadd Administrator Client',
         ]);
+
+        $this->call('vendor:publish', [
+            '--force' => true,
+        ]);
+
         $setting = $this->container->make(SettingsRepository::class);
         $setting->set('application.version', $this->container->version());
         $setting->set('site.enabled', true);
