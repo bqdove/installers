@@ -16,6 +16,7 @@ use Notadd\Foundation\Console\Abstracts\Command;
 use Notadd\Foundation\Member\Member;
 use Notadd\Foundation\Setting\Contracts\SettingsRepository;
 use PDO;
+use Symfony\Component\Yaml\Yaml;
 
 /**
  * Class InstallCommand.
@@ -223,10 +224,8 @@ class InstallCommand extends Command
         $this->data->put('database', $data['database_name']);
         $this->data->put('database_username', $data['database_username']);
         $this->data->put('database_password', $data['database_password']);
-        // $this->data->put('database_prefix', $data['database_prefix']);
         $this->data->put('admin_account', $data['account_username']);
         $this->data->put('admin_password', $data['account_password']);
-//        $this->data->put('admin_password_confirmation', $data['admin_password_confirmation']);
         $this->data->put('admin_email', $data['account_mail']);
         $this->data->put('website', $data['sitename']);
         $this->isDataSetted = true;
@@ -280,6 +279,8 @@ class InstallCommand extends Command
                 ];
                 break;
         }
+        file_put_contents($this->container->storagePath() . DIRECTORY_SEPARATOR . 'database.yaml', $this->container->make(Yaml::class)->dump($config));
+
         file_put_contents($this->container->storagePath() . DIRECTORY_SEPARATOR . 'bootstraps' . DIRECTORY_SEPARATOR . 'replace.php',
             '<?php return ' . var_export($config, true) . ';');
     }
