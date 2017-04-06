@@ -247,6 +247,7 @@ class InstallCommand extends Command
         $database->put('DB_DATABASE', $this->data->get('driver') == 'sqlite' ? $this->container->storagePath() . DIRECTORY_SEPARATOR . 'bootstraps' . DIRECTORY_SEPARATOR . 'database.sqlite' : $this->data->get('database'));
         $database->put('DB_USERNAME', $this->data->get('database_username'));
         $database->put('DB_PASSWORD', $this->data->get('database_password'));
+        $database->put('DB_PREFIX', $this->data->get('database_prefix'));
 
         file_put_contents($file, $this->container->make(Yaml::class)->dump($database->toArray()));
     }
