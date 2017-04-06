@@ -25,6 +25,10 @@
                     username: 'root',
                 },
                 message: '',
+                post: {
+                    loading: false,
+                    text: '安装',
+                },
                 result: {
                     administration: '',
                     frontend: '',
@@ -101,6 +105,8 @@
                     return false;
                 }
                 self.$refs.progress.start();
+                self.post.loading = true;
+                self.post.text = '正在安装……';
                 self.http.post(`${window.api}/install`, {
                     account_mail: self.account.mail,
                     account_password: self.account.password,
@@ -124,6 +130,8 @@
                     self.$refs.progress.fail();
                     self.steps.success = false;
                     self.message = error.response.data.data.message;
+                    self.post.loading = false;
+                    self.post.text = '安装';
                 });
                 return true;
             },
@@ -435,7 +443,7 @@
                             </div>
                             <div class="col-4">
                                 <button type="submit" @click="setAccount"
-                                        :disabled="steps.success === false || errors.any()">安装
+                                        :disabled="steps.success === false || post.loading || errors.any()">{{ post.text }}
                                 </button>
                             </div>
                         </div>
