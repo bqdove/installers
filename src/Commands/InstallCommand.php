@@ -250,5 +250,6 @@ class InstallCommand extends Command
         $database->put('DB_PREFIX', $this->data->get('database_prefix'));
 
         file_put_contents($file, $this->container->make(Yaml::class)->dump($database->toArray()));
+        touch($this->container->storagePath() . DIRECTORY_SEPARATOR . 'installed');
     }
 }
