@@ -224,6 +224,7 @@ class InstallCommand extends Command
         $this->data->put('database', $data['database_name']);
         $this->data->put('database_username', $data['database_username']);
         $this->data->put('database_password', $data['database_password']);
+        $this->data->put('database_port', $data['database_port']);
         $this->data->put('admin_account', $data['account_username']);
         $this->data->put('admin_password', $data['account_password']);
         $this->data->put('admin_email', $data['account_mail']);
@@ -236,52 +237,17 @@ class InstallCommand extends Command
      */
     protected function writingConfiguration()
     {
-        $config = [
-            'fetch'       => PDO::FETCH_OBJ,
-            'default'     => $this->data->get('driver'),
-            'connections' => [],
-            'migrations'  => 'migrations',
-            'redis'       => [],
-        ];
-        switch ($this->data->get('driver')) {
-            case 'mysql':
-                $config['connections']['mysql'] = [
-                    'driver'    => 'mysql',
-                    'host'      => $this->data->get('database_host'),
-                    'database'  => $this->data->get('database'),
-                    'username'  => $this->data->get('database_username'),
-                    'password'  => $this->data->get('database_password'),
-                    'charset'   => 'utf8',
-                    'collation' => 'utf8_unicode_ci',
-                    'prefix'    => $this->data->get('database_prefix'),
-                    'strict'    => false,
-                    'engine'    => null,
-                ];
-                break;
-            case 'pgsql':
-                $config['connections']['pgsql'] = [
-                    'driver'   => 'pgsql',
-                    'host'     => $this->data->get('database_host'),
-                    'database' => $this->data->get('database'),
-                    'username' => $this->data->get('database_username'),
-                    'password' => $this->data->get('database_password'),
-                    'charset'  => 'utf8',
-                    'prefix'   => $this->data->get('database_prefix'),
-                    'schema'   => 'public',
-                    'sslmode'  => 'prefer',
-                ];
-                break;
-            case 'sqlite':
-                $config['connections']['sqlite'] = [
-                    'driver'   => 'sqlite',
-                    'database' => $this->container->storagePath() . DIRECTORY_SEPARATOR . 'bootstraps' . DIRECTORY_SEPARATOR . 'database.sqlite',
-                    'prefix'   => $this->data->get('database_prefix'),
-                ];
-                break;
-        }
-        file_put_contents($this->container->storagePath() . DIRECTORY_SEPARATOR . 'database.yaml', $this->container->make(Yaml::class)->dump($config));
+        $file = $this->container->environmentFilePath();
+        $this->filesystem->exists($file) || touch($file);
 
-        file_put_contents($this->container->storagePath() . DIRECTORY_SEPARATOR . 'bootstraps' . DIRECTORY_SEPARATOR . 'replace.php',
-            '<?php return ' . var_export($config, true) . ';');
+        $database = new Collection($this->container->make(Yaml::class)->parse(file_get_contents($file)));
+        $database->put('DB_CONNECTION', $this->data->get('driver'));
+        $database->put('DB_HOST', $this->data->get('database_host'));
+        $database->put('DB_PORT', $this->data->get('database_port'));
+        $database->put('DB_DATABASE', $this->data->get('driver') == 'sqlite' ? $this->container->storagePath() . DIRECTORY_SEPARATOR . 'bootstraps' . DIRECTORY_SEPARATOR . 'database.sqlite' : $this->data->get('database'));
+        $database->put('DB_USERNAME', $this->data->get('database_username'));
+        $database->put('DB_PASSWORD', $this->data->get('database_password'));
+
+        file_put_contents($file, $this->container->make(Yaml::class)->dump($database->toArray()));
     }
 }
