@@ -159,6 +159,7 @@
                     database_username: self.database.username,
                 }).then(() => {
                     window.scrollTo(0, 0);
+                    self.$refs.progress.done();
                     self.post.loading = false;
                     self.post.text = '下一步';
                     self.steps.current = 3;
