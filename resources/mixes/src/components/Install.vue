@@ -95,6 +95,7 @@
                     } else {
                         self.$refs.progress.fail();
                     }
+                    self.post.text = '下一步';
                     self.steps.current = 1;
                 });
             },
@@ -131,7 +132,7 @@
                     self.steps.success = false;
                     self.message = error.response.data.data.message;
                     self.post.loading = false;
-                    self.post.text = '安装';
+                    self.post.text = '下一步';
                 });
                 return true;
             },
@@ -146,8 +147,31 @@
                 if (self.errors.any()) {
                     return false;
                 }
-                window.scrollTo(0, 0);
-                self.steps.current = 3;
+                self.$refs.progress.start();
+                self.post.loading = true;
+                self.post.text = '正在检测数据库配置……';
+                self.http.post(`${window.api}/database`, {
+                    database_engine: self.database.engine,
+                    database_host: self.database.host,
+                    database_name: self.database.database,
+                    database_password: self.database.password,
+                    database_port: self.database.port,
+                    database_username: self.database.username,
+                }).then(response => {
+                    window.console.log(response);
+                    window.scrollTo(0, 0);
+                    self.post.loading = false;
+                    self.post.text = '安装';
+                    self.steps.current = 3;
+                }).catch(error => {
+                    console.log(error.response);
+                    console.log(error.response.data);
+                    self.$refs.progress.fail();
+                    self.steps.success = false;
+                    self.message = error.response.data.data.message;
+                    self.post.loading = false;
+                    self.post.text = '下一步';
+                });
                 return true;
             },
         },
@@ -396,7 +420,7 @@
                             </div>
                             <div class="col-4">
                                 <button type="submit" @click="setDatabase"
-                                        :disabled="steps.success === false || errors.any('base')">下一步
+                                        :disabled="steps.success === false || post.loading || errors.any('base')">{{ post.text }}
                                 </button>
                             </div>
                         </div>

@@ -11,7 +11,7 @@ namespace Notadd\Installer;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Events\Dispatcher;
 use Illuminate\Routing\Router;
-use Illuminate\Support\ServiceProvider;
+use Notadd\Foundation\Http\Abstracts\ServiceProvider;
 use Notadd\Installer\Commands\InstallCommand;
 use Notadd\Installer\Contracts\Prerequisite;
 use Notadd\Installer\Controllers\Api\InstallController as InstallApiController;

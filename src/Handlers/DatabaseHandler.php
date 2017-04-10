@@ -8,6 +8,7 @@
  */
 namespace Notadd\Installer\Handlers;
 
+use Illuminate\Container\Container;
 use Notadd\Foundation\Passport\Abstracts\SetHandler;
 
 /**
@@ -15,5 +16,23 @@ use Notadd\Foundation\Passport\Abstracts\SetHandler;
  */
 class DatabaseHandler extends SetHandler
 {
+    /**
+     * DatabaseHandler constructor.
+     *
+     * @param \Illuminate\Container\Container $container
+     */
+    public function __construct(Container $container)
+    {
+        parent::__construct($container);
+    }
 
+    /**
+     * Execute Handler.
+     *
+     * @return bool
+     */
+    public function execute()
+    {
+        return true;
+    }
 }
