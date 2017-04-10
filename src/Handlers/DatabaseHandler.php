@@ -67,6 +67,7 @@ class DatabaseHandler extends SetHandler
                     'strict'    => true,
                     'engine'    => null,
                 ]);
+                $sql = 'show tables';
                 break;
             case 'pgsql':
                 $this->repository->set('database.connections.pgsql', [
@@ -81,10 +82,11 @@ class DatabaseHandler extends SetHandler
                     'schema'   => 'public',
                     'sslmode'  => 'prefer',
                 ]);
+                $sql = 'select pg_database_size("' . $this->request->input('database_name') . '");';
                 break;
         }
         try {
-            $results = collect($this->container->make('db')->select('show tables'));
+            $results = collect($this->container->make('db')->select($sql));
             if ($results->count()) {
                 $this->code = 500;
                 $this->errors->push('数据库[' . $this->request->input('database_name') . ']已经存在数据，请先清空数据库！');
@@ -94,11 +96,18 @@ class DatabaseHandler extends SetHandler
             $this->code = 500;
             $this->data = $exception->getTrace();
             switch ($exception->getCode()) {
+                case 7:
+                    $this->errors->push('PostgreSQL 数据库连接失败');
+                    break;
                 case 1045:
                     $this->errors->push('数据库账号或密码错误！');
                     break;
                 case 1049:
                     $this->errors->push('数据库[' . $this->request->input('database_name') . ']不存在，请先创建数据库！');
+                    break;
+                default:
+                    $this->errors->push($exception->getCode());
+                    $this->errors->push($exception->getMessage());
                     break;
             }
 
