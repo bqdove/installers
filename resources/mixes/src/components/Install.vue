@@ -157,18 +157,17 @@
                     database_password: self.database.password,
                     database_port: self.database.port,
                     database_username: self.database.username,
-                }).then(response => {
-                    window.console.log(response);
+                }).then(() => {
                     window.scrollTo(0, 0);
                     self.post.loading = false;
-                    self.post.text = '安装';
+                    self.post.text = '下一步';
                     self.steps.current = 3;
                 }).catch(error => {
                     console.log(error.response);
                     console.log(error.response.data);
                     self.$refs.progress.fail();
                     self.steps.success = false;
-                    self.message = error.response.data.data.message;
+                    self.message = error.response.data.message;
                     self.post.loading = false;
                     self.post.text = '下一步';
                 });
@@ -411,6 +410,13 @@
                                     <label>数据库密码</label>
                                     <input type="text" name="database_password" placeholder="请输入数据库密码"
                                            v-model="database.password" v-validate="validates.database.password">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" v-if="message.length > 0">
+                            <div class="col-12">
+                                <div class="form-group error">
+                                    <p>{{ message }}</p>
                                 </div>
                             </div>
                         </div>
