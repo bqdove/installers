@@ -8,8 +8,9 @@
  */
 namespace Notadd\Installer\Handlers;
 
+use Exception;
 use Illuminate\Container\Container;
-use Notadd\Foundation\Configuration\Repository;
+use Illuminate\Contracts\Config\Repository;
 use Notadd\Foundation\Passport\Abstracts\SetHandler;
 use PDO;
 
@@ -26,8 +27,8 @@ class DatabaseHandler extends SetHandler
     /**
      * DatabaseHandler constructor.
      *
-     * @param \Illuminate\Container\Container             $container
-     * @param \Notadd\Foundation\Configuration\Repository $repository
+     * @param \Illuminate\Container\Container         $container
+     * @param \Illuminate\Contracts\Config\Repository $repository
      */
     public function __construct(Container $container, Repository $repository)
     {
@@ -51,7 +52,7 @@ class DatabaseHandler extends SetHandler
             'connections' => [],
             'redis'       => [],
         ]);
-        switch ($this->request->input('driver')) {
+        switch ($this->request->input('database_engine')) {
             case 'mysql':
                 $this->repository->set('database.connections.mysql', [
                     'driver'    => 'mysql',
@@ -62,7 +63,7 @@ class DatabaseHandler extends SetHandler
                     'charset'   => 'utf8',
                     'collation' => 'utf8_unicode_ci',
                     'prefix'    => $this->request->input('database_prefix'),
-                    'port'   => $this->request->input('database_port') ?: 3306,
+                    'port'      => $this->request->input('database_port') ?: 3306,
                     'strict'    => true,
                     'engine'    => null,
                 ]);
@@ -76,12 +77,34 @@ class DatabaseHandler extends SetHandler
                     'password' => $this->request->input('database_password'),
                     'charset'  => 'utf8',
                     'prefix'   => $this->request->input('database_prefix'),
-                    'port'   => $this->request->input('database_port') ?: 5432,
+                    'port'     => $this->request->input('database_port') ?: 5432,
                     'schema'   => 'public',
                     'sslmode'  => 'prefer',
                 ]);
                 break;
         }
+        try {
+            $results = collect($this->container->make('db')->select('show tables'));
+            if ($results->count()) {
+                $this->code = 500;
+                $this->errors->push('数据库[' . $this->request->input('database_name') . ']已经存在数据，请先清空数据库！');
+                return false;
+            }
+        } catch (Exception $exception) {
+            $this->code = 500;
+            $this->data = $exception->getTrace();
+            switch ($exception->getCode()) {
+                case 1045:
+                    $this->errors->push('数据库账号或密码错误！');
+                    break;
+                case 1049:
+                    $this->errors->push('数据库[' . $this->request->input('database_name') . ']不存在，请先创建数据库！');
+                    break;
+            }
+
+            return false;
+        }
+
         return true;
     }
 }
