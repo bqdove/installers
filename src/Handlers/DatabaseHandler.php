@@ -47,11 +47,12 @@ class DatabaseHandler extends SetHandler
             return true;
         }
         $this->repository->set('database', [
-            'fetch'       => PDO::FETCH_OBJ,
+            'fetch'       => PDO::FETCH_CLASS,
             'default'     => $this->request->input('database_engine'),
             'connections' => [],
             'redis'       => [],
         ]);
+        $sql = '';
         switch ($this->request->input('database_engine')) {
             case 'mysql':
                 $this->repository->set('database.connections.mysql', [
@@ -80,16 +81,15 @@ class DatabaseHandler extends SetHandler
                     'prefix'   => $this->request->input('database_prefix'),
                     'port'     => $this->request->input('database_port') ?: 5432,
                     'schema'   => 'public',
-                    'sslmode'  => 'prefer',
                 ]);
-                $sql = 'select pg_database_size("' . $this->request->input('database_name') . '");';
+                $sql = "select * from pg_tables where schemaname='public'";
                 break;
         }
         try {
             $results = collect($this->container->make('db')->select($sql));
             if ($results->count()) {
                 $this->code = 500;
-                $this->errors->push('数据库[' . $this->request->input('database_name') . ']已经存在数据，请先清空数据库！');
+                $this->errors->push('数据库[' . $this->request->input('database_name') . ']已经存在数据表，请先清空数据库！');
                 return false;
             }
         } catch (Exception $exception) {
@@ -97,7 +97,7 @@ class DatabaseHandler extends SetHandler
             $this->data = $exception->getTrace();
             switch ($exception->getCode()) {
                 case 7:
-                    $this->errors->push('PostgreSQL 数据库连接失败');
+                    $this->errors->push('数据库账号或密码错误，或数据库不存在！');
                     break;
                 case 1045:
                     $this->errors->push('数据库账号或密码错误！');
