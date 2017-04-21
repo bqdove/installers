@@ -18,7 +18,7 @@ abstract class Prerequisite implements PrerequisiteContract
     /**
      * @var array
      */
-    protected $errors = [];
+    protected $messages = [];
 
     /**
      * Checking prerequisite's rules.
@@ -32,8 +32,8 @@ abstract class Prerequisite implements PrerequisiteContract
      *
      * @return array
      */
-    public function getErrors()
+    public function getMessages()
     {
-        return $this->errors;
+        return $this->messages;
     }
 }

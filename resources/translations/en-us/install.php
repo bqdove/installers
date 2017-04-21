@@ -8,4 +8,6 @@
  */
 
 return [
+    'fail' => 'Installation fail!',
+    'success' => 'Installation successful!',
 ];

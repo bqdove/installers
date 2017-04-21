@@ -25,5 +25,5 @@ interface Prerequisite
      *
      * @return mixed
      */
-    public function getErrors();
+    public function getMessages();
 }

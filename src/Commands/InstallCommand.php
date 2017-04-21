@@ -11,10 +11,12 @@ namespace Notadd\Installer\Commands;
 use Illuminate\Contracts\Config\Repository;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Collection;
+use Notadd\Administration\ModuleServiceProvider;
 use Notadd\Foundation\Console\Abstracts\Command;
 use Notadd\Foundation\Member\Member;
 use Notadd\Foundation\Setting\Contracts\SettingsRepository;
 use PDO;
+use Symfony\Component\Yaml\Yaml;
 
 /**
  * Class InstallCommand.
@@ -104,6 +106,7 @@ class InstallCommand extends Command
                     'charset'   => 'utf8',
                     'collation' => 'utf8_unicode_ci',
                     'prefix'    => $this->data->get('database_prefix'),
+                    'port'   => $this->data->get('database_port') ?: 3306,
                     'strict'    => true,
                     'engine'    => null,
                 ]);
@@ -117,6 +120,7 @@ class InstallCommand extends Command
                     'password' => $this->data->get('database_password'),
                     'charset'  => 'utf8',
                     'prefix'   => $this->data->get('database_prefix'),
+                    'port'   => $this->data->get('database_port') ?: 5432,
                     'schema'   => 'public',
                     'sslmode'  => 'prefer',
                 ]);
@@ -130,6 +134,11 @@ class InstallCommand extends Command
                 touch($this->container->storagePath() . DIRECTORY_SEPARATOR . 'bootstraps' . DIRECTORY_SEPARATOR . 'database.sqlite');
                 break;
         }
+
+        if (class_exists(ModuleServiceProvider::class)) {
+            $this->container->getProvider(ModuleServiceProvider::class) || $this->container->register(ModuleServiceProvider::class);
+        }
+
         $this->call('migrate', [
             '--force' => true,
         ]);
@@ -145,7 +154,13 @@ class InstallCommand extends Command
             '--password' => true,
             '--name'     => 'Notadd Administrator Client',
         ]);
+
+        $this->call('vendor:publish', [
+            '--force' => true,
+        ]);
+
         $setting = $this->container->make(SettingsRepository::class);
+        $setting->set('application.version', $this->container->version());
         $setting->set('site.enabled', true);
         $setting->set('site.name', $this->data->get('website'));
         $setting->set('setting.image.engine', 'normal');
@@ -204,17 +219,16 @@ class InstallCommand extends Command
      */
     public function setDataFromController(array $data)
     {
-        $this->data->put('driver', $data['driver']);
+        $this->data->put('driver', $data['database_engine']);
         $this->data->put('database_host', $data['database_host']);
-        $this->data->put('database', $data['database']);
+        $this->data->put('database', $data['database_name']);
         $this->data->put('database_username', $data['database_username']);
         $this->data->put('database_password', $data['database_password']);
-        $this->data->put('database_prefix', $data['database_prefix']);
-        $this->data->put('admin_account', $data['admin_account']);
-        $this->data->put('admin_password', $data['admin_password']);
-        $this->data->put('admin_password_confirmation', $data['admin_password_confirmation']);
-        $this->data->put('admin_email', $data['admin_email']);
-        $this->data->put('website', $data['website']);
+        $this->data->put('database_port', $data['database_port']);
+        $this->data->put('admin_account', $data['account_username']);
+        $this->data->put('admin_password', $data['account_password']);
+        $this->data->put('admin_email', $data['account_mail']);
+        $this->data->put('website', $data['sitename']);
         $this->isDataSetted = true;
     }
 
@@ -223,50 +237,19 @@ class InstallCommand extends Command
      */
     protected function writingConfiguration()
     {
-        $config = [
-            'fetch'       => PDO::FETCH_OBJ,
-            'default'     => $this->data->get('driver'),
-            'connections' => [],
-            'migrations'  => 'migrations',
-            'redis'       => [],
-        ];
-        switch ($this->data->get('driver')) {
-            case 'mysql':
-                $config['connections']['mysql'] = [
-                    'driver'    => 'mysql',
-                    'host'      => $this->data->get('database_host'),
-                    'database'  => $this->data->get('database'),
-                    'username'  => $this->data->get('database_username'),
-                    'password'  => $this->data->get('database_password'),
-                    'charset'   => 'utf8',
-                    'collation' => 'utf8_unicode_ci',
-                    'prefix'    => $this->data->get('database_prefix'),
-                    'strict'    => false,
-                    'engine'    => null,
-                ];
-                break;
-            case 'pgsql':
-                $config['connections']['pgsql'] = [
-                    'driver'   => 'pgsql',
-                    'host'     => $this->data->get('database_host'),
-                    'database' => $this->data->get('database'),
-                    'username' => $this->data->get('database_username'),
-                    'password' => $this->data->get('database_password'),
-                    'charset'  => 'utf8',
-                    'prefix'   => $this->data->get('database_prefix'),
-                    'schema'   => 'public',
-                    'sslmode'  => 'prefer',
-                ];
-                break;
-            case 'sqlite':
-                $config['connections']['sqlite'] = [
-                    'driver'   => 'sqlite',
-                    'database' => $this->container->storagePath() . DIRECTORY_SEPARATOR . 'bootstraps' . DIRECTORY_SEPARATOR . 'database.sqlite',
-                    'prefix'   => $this->data->get('database_prefix'),
-                ];
-                break;
-        }
-        file_put_contents($this->container->storagePath() . DIRECTORY_SEPARATOR . 'bootstraps' . DIRECTORY_SEPARATOR . 'replace.php',
-            '<?php return ' . var_export($config, true) . ';');
+        $file = $this->container->environmentFilePath();
+        $this->filesystem->exists($file) || touch($file);
+
+        $database = new Collection($this->container->make(Yaml::class)->parse(file_get_contents($file)));
+        $database->put('DB_CONNECTION', $this->data->get('driver'));
+        $database->put('DB_HOST', $this->data->get('database_host'));
+        $database->put('DB_PORT', $this->data->get('database_port'));
+        $database->put('DB_DATABASE', $this->data->get('driver') == 'sqlite' ? $this->container->storagePath() . DIRECTORY_SEPARATOR . 'bootstraps' . DIRECTORY_SEPARATOR . 'database.sqlite' : $this->data->get('database'));
+        $database->put('DB_USERNAME', $this->data->get('database_username'));
+        $database->put('DB_PASSWORD', $this->data->get('database_password'));
+        $database->put('DB_PREFIX', $this->data->get('database_prefix'));
+
+        file_put_contents($file, $this->container->make(Yaml::class)->dump($database->toArray()));
+        touch($this->container->storagePath() . DIRECTORY_SEPARATOR . 'installed');
     }
 }

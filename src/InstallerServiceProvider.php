@@ -8,10 +8,15 @@
  */
 namespace Notadd\Installer;
 
-use Illuminate\Support\ServiceProvider;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Events\Dispatcher;
+use Illuminate\Routing\Router;
+use Notadd\Foundation\Http\Abstracts\ServiceProvider;
 use Notadd\Installer\Commands\InstallCommand;
 use Notadd\Installer\Contracts\Prerequisite;
+use Notadd\Installer\Controllers\Api\InstallController as InstallApiController;
 use Notadd\Installer\Controllers\InstallController;
+use Notadd\Installer\Listeners\CsrfTokenRegister;
 use Notadd\Installer\Prerequisite\PhpExtension;
 use Notadd\Installer\Prerequisite\PhpVersion;
 use Notadd\Installer\Prerequisite\WritablePath;
@@ -22,18 +27,51 @@ use Notadd\Installer\Prerequisite\WritablePath;
 class InstallerServiceProvider extends ServiceProvider
 {
     /**
+     * @var \Illuminate\Events\Dispatcher
+     */
+    protected $dispatcher;
+
+    /**
+     * @var \Illuminate\Routing\Router
+     */
+    protected $router;
+
+    /**
+     * InstallerServiceProvider constructor.
+     *
+     * @param \Illuminate\Contracts\Foundation\Application $app
+     */
+    public function __construct(Application $app)
+    {
+        parent::__construct($app);
+        $this->dispatcher = $app[Dispatcher::class];
+        $this->router = $app[Router::class];
+    }
+
+    /**
      * Boot service provider.
      */
     public function boot()
     {
         if (!$this->app->isInstalled()) {
-            $this->app->make('router')->resource('/', InstallController::class);
+            $this->app->make(Dispatcher::class)->subscribe(CsrfTokenRegister::class);
+            $this->app->make('router')->resource('/', InstallController::class, [
+                'only' => 'index',
+            ]);
+            $this->app->make('router')->group(['middleware' => ['cross'], 'prefix' => 'api'], function () {
+                $this->app->make('router')->post('check', InstallApiController::class . '@check');
+                $this->app->make('router')->post('database', InstallApiController::class . '@database');
+                $this->app->make('router')->post('install', InstallApiController::class . '@install');
+            });
         }
         $this->commands([
             InstallCommand::class,
         ]);
         $this->loadViewsFrom(realpath(__DIR__ . '/../resources/views'), 'install');
         $this->loadTranslationsFrom(realpath(__DIR__ . '/../resources/translations'), 'install');
+        $this->publishes([
+            realpath(__DIR__ . '/../resources/mixes/dist/assets/install') => public_path('assets/install'),
+        ]);
     }
 
     /**
@@ -41,7 +79,7 @@ class InstallerServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->bind(Prerequisite::class, function () {
+        $this->app->singleton(Prerequisite::class, function () {
             return new Composite(new PhpVersion('5.6.28'), new PhpExtension([
                 'dom',
                 'fileinfo',
