@@ -81,16 +81,12 @@ class InstallHandler extends SetHandler
                     'account_password' => 'required',
                     'account_username' => 'required',
                     'database_engine' => 'required',
-                    'database_host' => 'required',
-                    'database_name' => 'required',
                     'sitename' => 'required',
                 ], [
                     'account_mail.required' => '必须填写管理员邮箱',
                     'account_password.required' => '必须填写管理员账户',
                     'account_username.required' => '必须填写管理员密码',
                     'database_engine.required' => '必须选择数据库引擎',
-                    'database_host.required' => '必须填写数据库地址',
-                    'database_name.required' => '必须填写数据库名称',
                     'sitename.required' => '必须填写网站名称',
                 ]);
             } else {
