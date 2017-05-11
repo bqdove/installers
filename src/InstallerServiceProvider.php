@@ -14,6 +14,7 @@ use Illuminate\Routing\Router;
 use Notadd\Foundation\Http\Abstracts\ServiceProvider;
 use Notadd\Installer\Commands\InstallCommand;
 use Notadd\Installer\Commands\IntegrationCommand;
+use Notadd\Installer\Commands\IntegrationConfigurationCommand;
 use Notadd\Installer\Contracts\Prerequisite;
 use Notadd\Installer\Controllers\Api\InstallController as InstallApiController;
 use Notadd\Installer\Controllers\InstallController;
@@ -68,6 +69,7 @@ class InstallerServiceProvider extends ServiceProvider
         $this->commands([
             InstallCommand::class,
             IntegrationCommand::class,
+            IntegrationConfigurationCommand::class,
         ]);
         $this->loadViewsFrom(realpath(__DIR__ . '/../resources/views'), 'install');
         $this->loadTranslationsFrom(realpath(__DIR__ . '/../resources/translations'), 'install');

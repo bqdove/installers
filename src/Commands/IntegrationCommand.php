@@ -57,6 +57,7 @@ class IntegrationCommand extends Command
         ]);
 
         $this->call('key:generate');
+        touch($this->container->storagePath() . DIRECTORY_SEPARATOR . 'installed');
         $this->info('Notadd Installed!');
     }
 }
