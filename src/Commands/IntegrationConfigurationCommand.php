@@ -11,7 +11,7 @@ namespace Notadd\Installer\Commands;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Collection;
 use Notadd\Foundation\Console\Abstracts\Command;
-use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Yaml\Yaml;
 
 /**
@@ -37,13 +37,13 @@ class IntegrationConfigurationCommand extends Command
 
     public function configure()
     {
-        $this->addArgument('driver', InputArgument::REQUIRED, 'Database driver, such as mysql, pgsql, sqlite.');
-        $this->addArgument('host', InputArgument::REQUIRED, 'Database host.');
-        $this->addArgument('port', InputArgument::REQUIRED, 'Database port.');
-        $this->addArgument('database', InputArgument::REQUIRED, 'Database name.');
-        $this->addArgument('username', InputArgument::REQUIRED, 'Database username.');
-        $this->addArgument('password', InputArgument::REQUIRED, 'Database password.');
-        $this->addArgument('prefix', InputArgument::REQUIRED, 'Database prefix.');
+        $this->addOption('driver', null, InputOption::VALUE_REQUIRED, 'Database driver, such as mysql, pgsql, sqlite.');
+        $this->addOption('host', null, InputOption::VALUE_REQUIRED, 'Database host.');
+        $this->addOption('port', null, InputOption::VALUE_REQUIRED, 'Database port.');
+        $this->addOption('database', null, InputOption::VALUE_REQUIRED, 'Database name.');
+        $this->addOption('username', null, InputOption::VALUE_REQUIRED, 'Database username.');
+        $this->addOption('password', null, InputOption::VALUE_REQUIRED, 'Database password.');
+        $this->addOption('prefix', null, InputOption::VALUE_REQUIRED, 'Database prefix.');
         $this->setName('integration:configuration');
     }
 
@@ -52,13 +52,13 @@ class IntegrationConfigurationCommand extends Command
         $file = $this->container->environmentFilePath();
         $this->files->exists($file) || touch($file);
         $database = new Collection($this->container->make(Yaml::class)->parse(file_get_contents($file)));
-        $database->put('DB_CONNECTION', $this->input->getArgument('driver'));
-        $database->put('DB_HOST', $this->input->getArgument('host'));
-        $database->put('DB_PORT', $this->input->getArgument('port'));
-        $database->put('DB_DATABASE', $this->input->getArgument('driver') == 'sqlite' ? $this->container->storagePath() . DIRECTORY_SEPARATOR . 'bootstraps' . DIRECTORY_SEPARATOR . 'database.sqlite' : $this->input->getArgument('database'));
-        $database->put('DB_USERNAME', $this->input->getArgument('username'));
-        $database->put('DB_PASSWORD', $this->input->getArgument('password'));
-        $database->put('DB_PREFIX', $this->input->getArgument('prefix'));
+        $database->put('DB_CONNECTION', $this->input->getOption('driver'));
+        $database->put('DB_HOST', $this->input->getOption('host'));
+        $database->put('DB_PORT', $this->input->getOption('port'));
+        $database->put('DB_DATABASE', $this->input->getOption('driver') == 'sqlite' ? $this->container->storagePath() . DIRECTORY_SEPARATOR . 'bootstraps' . DIRECTORY_SEPARATOR . 'database.sqlite' : $this->input->getOption('database'));
+        $database->put('DB_USERNAME', $this->input->getOption('username'));
+        $database->put('DB_PASSWORD', $this->input->getOption('password'));
+        $database->put('DB_PREFIX', $this->input->getOption('prefix'));
 
         file_put_contents($file, $this->container->make(Yaml::class)->dump($database->toArray()));
     }
