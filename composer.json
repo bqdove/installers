@@ -15,6 +15,11 @@
             "Notadd\\Installer\\": "src/"
         }
     },
+    "autoload-dev": {
+        "psr-4": {
+            "Notadd\\Installer\\Tests\\": "tests/"
+        }
+    },
     "require": {
         "composer-plugin-api": "^1.0"
     },
