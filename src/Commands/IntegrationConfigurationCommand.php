@@ -42,7 +42,7 @@ class IntegrationConfigurationCommand extends Command
         $this->addOption('port', null, InputOption::VALUE_REQUIRED, 'Database port.');
         $this->addOption('database', null, InputOption::VALUE_REQUIRED, 'Database name.');
         $this->addOption('username', null, InputOption::VALUE_REQUIRED, 'Database username.');
-        $this->addOption('password', null, InputOption::VALUE_REQUIRED, 'Database password.');
+        $this->addOption('password', null, InputOption::VALUE_OPTIONAL, 'Database password.');
         $this->addOption('prefix', null, InputOption::VALUE_REQUIRED, 'Database prefix.');
         $this->setName('integration:configuration');
     }
@@ -57,7 +57,7 @@ class IntegrationConfigurationCommand extends Command
         $database->put('DB_PORT', $this->input->getOption('port'));
         $database->put('DB_DATABASE', $this->input->getOption('driver') == 'sqlite' ? $this->container->storagePath() . DIRECTORY_SEPARATOR . 'bootstraps' . DIRECTORY_SEPARATOR . 'database.sqlite' : $this->input->getOption('database'));
         $database->put('DB_USERNAME', $this->input->getOption('username'));
-        $database->put('DB_PASSWORD', $this->input->getOption('password'));
+        $database->put('DB_PASSWORD', $this->input->getOption('password') ?: '');
         $database->put('DB_PREFIX', $this->input->getOption('prefix'));
 
         file_put_contents($file, $this->container->make(Yaml::class)->dump($database->toArray()));
