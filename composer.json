@@ -15,11 +15,17 @@
             "Notadd\\Installer\\": "src/"
         }
     },
+    "autoload-dev": {
+        "psr-4": {
+            "Notadd\\Installer\\Tests\\": "tests/"
+        }
+    },
     "require": {
         "composer-plugin-api": "^1.0"
     },
     "require-dev": {
-        "composer/composer": "1.0.*@dev"
+        "composer/composer": "1.0.*@dev",
+        "phpunit/phpunit": "~5.7"
     },
     "extra": {
         "class": "Notadd\\Installer\\Composer\\Plugin"

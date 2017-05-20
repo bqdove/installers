@@ -3,7 +3,7 @@
  * This file is part of Notadd.
  *
  * @author        TwilRoad <269044570@qq.com>
- * @copyright (c) 2016, iBenchu.org
+ * @copyright (c) 2016, notadd.com
  * @datetime      2016-09-26 16:58
  */
 namespace Notadd\Installer\Commands;
@@ -71,7 +71,7 @@ class InstallCommand extends Command
      */
     protected function createAdministrationUser()
     {
-        $user = Member::create([
+        $user = Member::query()->create([
             'name'     => $this->data->get('admin_account'),
             'email'    => $this->data->get('admin_email'),
             'password' => bcrypt($this->data->get('admin_password')),
@@ -141,12 +141,6 @@ class InstallCommand extends Command
 
         $this->call('migrate', [
             '--force' => true,
-        ]);
-
-        // 导入用户权限
-        $this->call('permission', [
-            '--force' => true,
-            '--all'   => true,
         ]);
 
         $this->call('passport:keys');
