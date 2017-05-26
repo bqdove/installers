@@ -9,13 +9,13 @@
 namespace Notadd\Installer\Handlers;
 
 use Illuminate\Container\Container;
-use Notadd\Foundation\Passport\Abstracts\DataHandler;
+use Notadd\Foundation\Passport\Abstracts\Handler;
 use Notadd\Installer\Contracts\Prerequisite;
 
 /**
  * Class CheckingHandler.
  */
-class CheckHandler extends DataHandler
+class CheckHandler extends Handler
 {
     /**
      * @var \Notadd\Installer\Contracts\Prerequisite
@@ -35,47 +35,13 @@ class CheckHandler extends DataHandler
     }
 
     /**
-     * Http code.
+     * Execute Handler.
      *
-     * @return int
+     * @throws \Exception
      */
-    public function code()
-    {
-        return 200;
-    }
-
-    /**
-     * Errors for handler.
-     *
-     * @return array
-     */
-    public function errors()
-    {
-        return [
-            $this->translator->trans(''),
-        ];
-    }
-
-    /**
-     * Data for handler.
-     *
-     * @return array
-     */
-    public function data()
+    protected function execute()
     {
         $this->prerequisite->check();
-        return $this->prerequisite->getMessages();
-    }
-
-    /**
-     * Messages for handler.
-     *
-     * @return array
-     */
-    public function messages()
-    {
-        return [
-            $this->translator->trans(''),
-        ];
+        $this->success()->withData($this->prerequisite->getMessages())->withMessage('获取预安装检测信息成功！');
     }
 }
