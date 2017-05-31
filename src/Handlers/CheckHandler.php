@@ -9,7 +9,7 @@
 namespace Notadd\Installer\Handlers;
 
 use Illuminate\Container\Container;
-use Notadd\Foundation\Passport\Abstracts\Handler;
+use Notadd\Foundation\Routing\Abstracts\Handler;
 use Notadd\Installer\Contracts\Prerequisite;
 
 /**
