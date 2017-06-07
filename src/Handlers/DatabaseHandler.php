@@ -91,8 +91,6 @@ class DatabaseHandler extends Handler
                     $this->withCode(200)->withMessage('');
                 }
             } catch (Exception $exception) {
-                $this->code = 500;
-                $this->data = $exception->getTrace();
                 switch ($exception->getCode()) {
                     case 7:
                         $error = '数据库账号或密码错误，或数据库不存在！';
