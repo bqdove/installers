@@ -42,6 +42,6 @@ class CheckHandler extends Handler
     protected function execute()
     {
         $this->prerequisite->check();
-        $this->success()->withData($this->prerequisite->getMessages())->withMessage('获取预安装检测信息成功！');
+        $this->withCode(200)->withData($this->prerequisite->getMessages())->withMessage('获取预安装检测信息成功！');
     }
 }
