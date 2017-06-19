@@ -20,14 +20,17 @@
             "Notadd\\Installer\\Tests\\": "tests/"
         }
     },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "0.7-dev"
+        },
+        "class": "Notadd\\Installer\\Composer\\Plugin"
+    },
     "require": {
         "composer-plugin-api": "^1.0"
     },
     "require-dev": {
         "composer/composer": "1.0.*@dev",
         "phpunit/phpunit": "~5.7"
-    },
-    "extra": {
-        "class": "Notadd\\Installer\\Composer\\Plugin"
     }
 }
