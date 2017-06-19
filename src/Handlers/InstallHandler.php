@@ -2,73 +2,25 @@
 /**
  * This file is part of Notadd.
  *
- * @author TwilRoad <269044570@qq.com>
+ * @author TwilRoad <heshudong@ibenchu.com>
  * @copyright (c) 2017, notadd.com
  * @datetime 2017-03-06 17:34
  */
 namespace Notadd\Installer\Handlers;
 
-use Illuminate\Container\Container;
 use Illuminate\Contracts\Console\Kernel;
-use Notadd\Foundation\Passport\Abstracts\SetHandler;
+use Notadd\Foundation\Routing\Abstracts\Handler;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;
 
 /**
  * Class InstallHandler.
  */
-class InstallHandler extends SetHandler
+class InstallHandler extends Handler
 {
-    /**
-     * @var string
-     */
-    protected $error = '';
-
-    /**
-     * InstallHandler constructor.
-     *
-     * @param \Illuminate\Container\Container $container
-     */
-    public function __construct(Container $container)
-    {
-        parent::__construct($container);
-    }
-
-    /**
-     * Data for handler.
-     *
-     * @return array|string
-     * @throws \Illuminate\Contracts\Container\BindingResolutionException
-     */
-    public function data()
-    {
-        if ($this->error) {
-            return $this->error;
-        } else {
-            return [
-                'all' => $this->request->all(),
-                'administration' => url('admin'),
-                'frontend' => url(''),
-            ];
-        }
-    }
-
-    /**
-     * Errors for handler.
-     *
-     * @return array
-     */
-    public function errors()
-    {
-        return [
-            $this->translator->trans('install::install.fail'),
-        ];
-    }
-
     /**
      * Execute Handler.
      *
-     * @return bool
      * @throws \Illuminate\Contracts\Container\BindingResolutionException
      * @throws \Illuminate\Validation\ValidationException
      */
@@ -77,39 +29,39 @@ class InstallHandler extends SetHandler
         try {
             if ($this->request->input('database_engine') === 'sqlite') {
                 $this->validate($this->request, [
-                    'account_mail' => 'required',
+                    'account_mail'     => 'required',
                     'account_password' => 'required',
                     'account_username' => 'required',
-                    'database_engine' => 'required',
-                    'sitename' => 'required',
+                    'database_engine'  => 'required',
+                    'sitename'         => 'required',
                 ], [
-                    'account_mail.required' => '必须填写管理员邮箱',
+                    'account_mail.required'     => '必须填写管理员邮箱',
                     'account_password.required' => '必须填写管理员账户',
                     'account_username.required' => '必须填写管理员密码',
-                    'database_engine.required' => '必须选择数据库引擎',
-                    'sitename.required' => '必须填写网站名称',
+                    'database_engine.required'  => '必须选择数据库引擎',
+                    'sitename.required'         => '必须填写网站名称',
                 ]);
             } else {
                 $this->validate($this->request, [
-                    'account_mail' => 'required',
-                    'account_password' => 'required',
-                    'account_username' => 'required',
-                    'database_engine' => 'required',
-                    'database_host' => 'required',
-                    'database_name' => 'required',
+                    'account_mail'      => 'required',
+                    'account_password'  => 'required',
+                    'account_username'  => 'required',
+                    'database_engine'   => 'required',
+                    'database_host'     => 'required',
+                    'database_name'     => 'required',
                     'database_password' => 'required',
                     'database_username' => 'required',
-                    'sitename' => 'required',
+                    'sitename'          => 'required',
                 ], [
-                    'account_mail.required' => '必须填写管理员邮箱',
-                    'account_password.required' => '必须填写管理员账户',
-                    'account_username.required' => '必须填写管理员密码',
-                    'database_engine.required' => '必须选择数据库引擎',
-                    'database_host.required' => '必须填写数据库地址',
-                    'database_name.required' => '必须填写数据库名称',
+                    'account_mail.required'      => '必须填写管理员邮箱',
+                    'account_password.required'  => '必须填写管理员账户',
+                    'account_username.required'  => '必须填写管理员密码',
+                    'database_engine.required'   => '必须选择数据库引擎',
+                    'database_host.required'     => '必须填写数据库地址',
+                    'database_name.required'     => '必须填写数据库名称',
                     'database_password.required' => '必须填写数据库密码',
                     'database_username.required' => '必须填写数据库用户名',
-                    'sitename.required' => '必须填写网站名称',
+                    'sitename.required'          => '必须填写网站名称',
                 ]);
             }
             $command = $this->getCommand('install');
@@ -117,14 +69,17 @@ class InstallHandler extends SetHandler
             $input = new ArrayInput([]);
             $output = new BufferedOutput();
             $command->run($input, $output);
+            $this->withCode(200)->withData([
+                'all'            => $this->request->all(),
+                'administration' => url('admin'),
+                'frontend'       => url(''),
+            ])->withMessage('install::install.success');
         } catch (\Exception $exception) {
-            $this->code = $exception->getCode();
-            $this->error = [
+            $this->withCode($exception->getCode())->withError([
                 'message' => $exception->getMessage(),
-                'trace' => $exception->getTrace(),
-            ];
+                'trace'   => $exception->getTrace(),
+            ]);
         }
-        return true;
     }
 
     /**
@@ -152,17 +107,5 @@ class InstallHandler extends SetHandler
         $kernel->bootstrap();
 
         return $kernel->getArtisan();
-    }
-
-    /**
-     * Messages for handler.
-     *
-     * @return array
-     */
-    public function messages()
-    {
-        return [
-            $this->translator->trans('install::install.success'),
-        ];
     }
 }
