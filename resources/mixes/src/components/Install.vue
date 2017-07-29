@@ -126,8 +126,8 @@
                     self.result.frontend = data.data.frontend;
                     self.steps.current = 4;
                 }).catch(error => {
-                    console.log(error.response);
-                    console.log(error.response.data);
+                    window.console.log(error.response);
+                    window.console.log(error.response.data);
                     self.$refs.progress.fail();
                     self.steps.success = false;
                     self.message = error.response.data.data.message;
@@ -164,8 +164,8 @@
                     self.post.text = '下一步';
                     self.steps.current = 3;
                 }).catch(error => {
-                    console.log(error.response);
-                    console.log(error.response.data);
+                    window.console.log(error.response);
+                    window.console.log(error.response.data);
                     self.$refs.progress.fail();
                     self.steps.success = false;
                     self.message = error.response.data.message;
