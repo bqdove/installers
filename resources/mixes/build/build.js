@@ -2,13 +2,12 @@ require('./check-versions')();
 
 process.env.NODE_ENV = 'production';
 
-var ora = require('ora');
+var config = require('../config');
 var rm = require('rimraf');
 var path = require('path');
 var chalk = require('chalk');
 var merge = require('webpack-merge');
 var webpack = require('webpack');
-var config = require('../config');
 var buildWebpackConfig = require('./webpack.prod.conf');
 var webpackConfig = merge(buildWebpackConfig, {
     plugins: [
