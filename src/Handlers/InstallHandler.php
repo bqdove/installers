@@ -75,8 +75,7 @@ class InstallHandler extends Handler
                 'frontend'       => url(''),
             ])->withMessage('install::install.success');
         } catch (\Exception $exception) {
-            $this->withCode($exception->getCode())->withError([
-                'message' => $exception->getMessage(),
+            $this->withCode($exception->getCode())->withError($exception->getMessage())->withExtra([
                 'trace'   => $exception->getTrace(),
             ]);
         }
