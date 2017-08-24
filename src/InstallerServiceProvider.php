@@ -73,9 +73,6 @@ class InstallerServiceProvider extends ServiceProvider
         ]);
         $this->loadViewsFrom(realpath(__DIR__ . '/../resources/views'), 'install');
         $this->loadTranslationsFrom(realpath(__DIR__ . '/../resources/translations'), 'install');
-        $this->publishes([
-            realpath(__DIR__ . '/../resources/mixes/dist/assets/install') => public_path('assets/install'),
-        ]);
     }
 
     /**
