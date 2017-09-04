@@ -222,7 +222,7 @@
         <top-progress color="#bde2fd" ref="progress"></top-progress>
         <div class="install-header">
             <div class="container">
-                <span>当前版本：0.7.21</span>
+                <span>当前版本：0.7.39</span>
             </div>
         </div>
         <div class="container">
