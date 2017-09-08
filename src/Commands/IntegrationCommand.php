@@ -27,7 +27,7 @@ class IntegrationCommand extends Command
         $this->setName('integration');
     }
 
-    public function fire()
+    public function handle()
     {
         $this->call('migrate', [
             '--force' => true,

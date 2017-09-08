@@ -47,7 +47,7 @@ class IntegrationConfigurationCommand extends Command
         $this->setName('integration:configuration');
     }
 
-    public function fire()
+    public function handle()
     {
         $file = $this->container->environmentFilePath();
         $this->files->exists($file) || touch($file);

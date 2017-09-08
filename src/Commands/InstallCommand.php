@@ -84,7 +84,7 @@ class InstallCommand extends Command
     /**
      * Command handler.
      */
-    public function fire()
+    public function handle()
     {
         if (! $this->isDataSetted) {
             $this->setDataFromConsoling();
