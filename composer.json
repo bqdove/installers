@@ -22,7 +22,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "0.7.2-dev"
+            "dev-master": "0.7-dev"
         },
         "class": "Notadd\\Installer\\Composer\\Plugin"
     },
