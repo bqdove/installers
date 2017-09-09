@@ -29,6 +29,11 @@
                     loading: false,
                     text: '安装',
                 },
+                redis: {
+                    host: 'localhost',
+                    password: '',
+                    port: '6379',
+                },
                 result: {
                     administration: '',
                     frontend: '',
@@ -118,6 +123,9 @@
                     database_password: self.database.password,
                     database_port: self.database.port,
                     database_username: self.database.username,
+                    redis_host: self.redis.host,
+                    redis_password: self.redis.password,
+                    redis_port: self.redis.port,
                     sitename: self.sitename,
                 }).then(response => {
                     const data = response.data;
@@ -157,6 +165,9 @@
                     database_password: self.database.password,
                     database_port: self.database.port,
                     database_username: self.database.username,
+                    redis_host: self.redis.host,
+                    redis_password: self.redis.password,
+                    redis_port: self.redis.port,
                 }).then(() => {
                     window.scrollTo(0, 0);
                     self.$refs.progress.done();
@@ -411,6 +422,28 @@
                                     <label>数据库密码</label>
                                     <input type="text" name="database_password" placeholder="请输入数据库密码"
                                            v-model="database.password" v-validate="validates.database.password">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-4">
+                                <div class="form-group">
+                                    <label>Redis 地址</label>
+                                    <input type="text" name="redis_host" placeholder="请输入数据库用户名"
+                                           v-model="redis.host">
+                                </div>
+                            </div>
+                            <div class="col-2">
+                                <div class="form-group">
+                                    <label>Redis 端口</label>
+                                    <input type="text" name="redis_port" placeholder="默认端口" v-model="redis.port">
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="form-group">
+                                    <label>Redis 密码</label>
+                                    <input type="text" name="redis_password" placeholder="请输入数据库密码"
+                                           v-model="redis.password">
                                 </div>
                             </div>
                         </div>
