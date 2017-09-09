@@ -222,6 +222,9 @@ class InstallCommand extends Command
         $this->data->put('admin_account', $data['account_username']);
         $this->data->put('admin_password', $data['account_password']);
         $this->data->put('admin_email', $data['account_mail']);
+        $this->data->put('redis_host', $data['redis_host']);
+        $this->data->put('redis_password', $data['redis_password'] ?: null);
+        $this->data->put('redis_port', $data['redis_port']);
         $this->data->put('website', $data['sitename']);
         $this->isDataSetted = true;
     }
@@ -242,6 +245,9 @@ class InstallCommand extends Command
         $database->put('DB_USERNAME', $this->data->get('database_username'));
         $database->put('DB_PASSWORD', $this->data->get('database_password'));
         $database->put('DB_PREFIX', $this->data->get('database_prefix'));
+        $database->put('REDIS_HOST', $this->data->get('redis_host'));
+        $database->put('REDIS_PASSWORD', $this->data->get('redis_password'));
+        $database->put('REDIS_PORT', $this->data->get('redis_port'));
 
         file_put_contents($file, $this->container->make(Yaml::class)->dump($database->toArray()));
         touch($this->container->storagePath() . DIRECTORY_SEPARATOR . 'installed');

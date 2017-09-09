@@ -86,7 +86,7 @@ class InstallHandler extends Handler
      *
      * @param string $name
      *
-     * @return \Notadd\Foundation\Console\Abstracts\Command|\Symfony\Component\Console\Command\Command
+     * @return \Notadd\Foundation\Console\Abstracts\Command|\Symfony\Component\Console\Command\Command|\Notadd\Installer\Commands\InstallCommand
      * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
     protected function getCommand($name)
