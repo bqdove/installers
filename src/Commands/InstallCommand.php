@@ -246,7 +246,7 @@ class InstallCommand extends Command
         $database->put('DB_PASSWORD', $this->data->get('database_password'));
         $database->put('DB_PREFIX', $this->data->get('database_prefix'));
         $database->put('REDIS_HOST', $this->data->get('redis_host'));
-        $database->put('REDIS_PASSWORD', $this->data->get('redis_password'));
+        $this->data->get('redis_password') && $database->put('REDIS_PASSWORD', $this->data->get('redis_password'));
         $database->put('REDIS_PORT', $this->data->get('redis_port'));
 
         file_put_contents($file, $this->container->make(Yaml::class)->dump($database->toArray()));
