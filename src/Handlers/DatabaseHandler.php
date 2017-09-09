@@ -83,7 +83,14 @@ class DatabaseHandler extends Handler
                     $sql = "select * from pg_tables where schemaname='public'";
                     break;
             }
+            $this->repository->set('database.redis.default', [
+                'host'     => $this->request->input('redis_host', 'localhost'),
+                'password' => $this->request->input('redis_password') ?: null,
+                'port'     => $this->request->input('redis_port', 6379),
+                'database' => 0,
+            ]);
             try {
+                $this->container->make('redis')->connect();
                 $results = collect($this->container->make('db')->select($sql));
                 if ($results->count()) {
                     $this->withCode(500)->withError('数据库[' . $this->request->input('database_name') . ']已经存在数据表，请先清空数据库！');
@@ -92,8 +99,17 @@ class DatabaseHandler extends Handler
                 }
             } catch (Exception $exception) {
                 switch ($exception->getCode()) {
+                    case 0:
+                        $error = 'Redis 密码未设置或密码错误！';
+                        break;
                     case 7:
                         $error = '数据库账号或密码错误，或数据库不存在！';
+                        break;
+                    case 99:
+                        $error = 'Redis 地址不可访问！';
+                        break;
+                    case 111:
+                        $error = 'Redis 配置错误！';
                         break;
                     case 1045:
                         $error = '数据库账号或密码错误！';
