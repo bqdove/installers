@@ -238,6 +238,8 @@ class InstallCommand extends Command
         $this->filesystem->exists($file) || touch($file);
 
         $database = new Collection($this->container->make(Yaml::class)->parse(file_get_contents($file)));
+        $database->put('BROADCAST_DRIVER', 'redis');
+        $database->put('CACHE_DRIVER', 'redis');
         $database->put('DB_CONNECTION', $this->data->get('driver'));
         $database->put('DB_HOST', $this->data->get('database_host'));
         $database->put('DB_PORT', $this->data->get('database_port'));
@@ -248,6 +250,7 @@ class InstallCommand extends Command
         $database->put('REDIS_HOST', $this->data->get('redis_host'));
         $this->data->get('redis_password') && $database->put('REDIS_PASSWORD', $this->data->get('redis_password'));
         $database->put('REDIS_PORT', $this->data->get('redis_port'));
+        $database->put('QUEUE_DRIVER', 'redis');
 
         file_put_contents($file, $this->container->make(Yaml::class)->dump($database->toArray()));
         touch($this->container->storagePath() . DIRECTORY_SEPARATOR . 'installed');
