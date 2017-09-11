@@ -7,7 +7,7 @@
         beforeRouteEnter(to, from, next) {
             notadd.http.post(`${window.api}/information`).then(response => {
                 next(vm => {
-                    vm.version = response.data.version;
+                    vm.version = response.data.data.version;
                 });
             });
         },
@@ -242,7 +242,7 @@
         <top-progress color="#bde2fd" ref="progress"></top-progress>
         <div class="install-header">
             <div class="container">
-                <span>当前版本：0.7.39</span>
+                <span>当前版本：{{ version }}</span>
             </div>
         </div>
         <div class="container">
