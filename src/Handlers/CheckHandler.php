@@ -41,7 +41,11 @@ class CheckHandler extends Handler
      */
     protected function execute()
     {
-        $this->prerequisite->check();
-        $this->withCode(200)->withData($this->prerequisite->getMessages())->withMessage('获取预安装检测信息成功！');
+        if ($this->container->isInstalled()) {
+            $this->withCode(500)->withError('Notadd 已经安装，无需重复安装！');
+        } else {
+            $this->prerequisite->check();
+            $this->withCode(200)->withData($this->prerequisite->getMessages())->withMessage('获取预安装检测信息成功！');
+        }
     }
 }
