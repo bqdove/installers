@@ -11,6 +11,7 @@ namespace Notadd\Installer\Controllers\Api;
 use Notadd\Foundation\Routing\Abstracts\Controller;
 use Notadd\Installer\Handlers\CheckHandler;
 use Notadd\Installer\Handlers\DatabaseHandler;
+use Notadd\Installer\Handlers\InformationHandler;
 use Notadd\Installer\Handlers\InstallHandler;
 
 /**
@@ -39,6 +40,18 @@ class InstallController extends Controller
      * @return \Notadd\Foundation\Passport\Responses\ApiResponse|\Psr\Http\Message\ResponseInterface|\Zend\Diactoros\Response
      */
     public function database(DatabaseHandler $handler)
+    {
+        return $handler->toResponse()->generateHttpResponse();
+    }
+
+    /**
+     * Information handler.
+     *
+     * @param \Notadd\Installer\Handlers\InformationHandler $handler
+     *
+     * @return \Notadd\Foundation\Passport\Responses\ApiResponse|\Psr\Http\Message\ResponseInterface|\Zend\Diactoros\Response
+     */
+    public function information(InformationHandler $handler)
     {
         return $handler->toResponse()->generateHttpResponse();
     }
