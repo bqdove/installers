@@ -1,8 +1,16 @@
 <script>
     import Scrollbar from 'vue2-scrollbar';
+    import notadd from '../notadd';
     import TopProgress from './Progress.vue';
 
     export default {
+        beforeRouteEnter(to, from, next) {
+            notadd.http.post(`${window.api}/information`).then(response => {
+                next(vm => {
+                    vm.version = response.data.version;
+                });
+            });
+        },
         components: {
             Scrollbar,
             TopProgress,
@@ -76,6 +84,7 @@
                     },
                     sitename: 'required',
                 },
+                version: '_._.__',
             };
         },
         methods: {
