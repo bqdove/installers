@@ -20,7 +20,7 @@ use PDO;
 class DatabaseHandler extends Handler
 {
     /**
-     * @var \Notadd\Foundation\Configuration\Repository
+     * @var \Illuminate\Contracts\Config\Repository
      */
     protected $repository;
 
