@@ -3,8 +3,8 @@
  * This file is part of Notadd.
  *
  * @author TwilRoad <heshudong@ibenchu.com>
- * @copyright (c) 2016, notadd.com
- * @datetime 2016-12-03 13:55
+ * @copyright (c) 2017, notadd.com
+ * @datetime 2017-09-18 20:36
  */
 namespace Notadd\Installer\Composer\Installers;
 
@@ -12,9 +12,9 @@ use Composer\Installer\LibraryInstaller;
 use Composer\Package\PackageInterface;
 
 /**
- * Class Installer.
+ * Class ExtensionInstaller.
  */
-class Installer extends LibraryInstaller
+class ExtensionInstaller extends LibraryInstaller
 {
     /**
      * Get install path for Composer Installer.
@@ -27,7 +27,7 @@ class Installer extends LibraryInstaller
     {
         list($vendor, $name) = explode('/', $package->getPrettyName());
 
-        return 'modules/' . $name;
+        return 'extensions/' . $vendor . '/' . $name;
     }
 
     /**
@@ -39,6 +39,6 @@ class Installer extends LibraryInstaller
      */
     public function supports($packageType)
     {
-        return $packageType === 'notadd-module';
+        return $packageType === 'notadd-extension';
     }
 }
