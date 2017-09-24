@@ -12,9 +12,9 @@ use Composer\Installer\LibraryInstaller;
 use Composer\Package\PackageInterface;
 
 /**
- * Class ExpandInstaller.
+ * Class ExtensionInstaller.
  */
-class ExpandInstaller extends LibraryInstaller
+class AddonInstaller extends LibraryInstaller
 {
     /**
      * Get install path for Composer Installer.
@@ -27,7 +27,7 @@ class ExpandInstaller extends LibraryInstaller
     {
         list($vendor, $name) = explode('/', $package->getPrettyName());
 
-        return 'expands/' . $name;
+        return 'extensions/' . $vendor . '/' . $name;
     }
 
     /**
@@ -39,6 +39,6 @@ class ExpandInstaller extends LibraryInstaller
      */
     public function supports($packageType)
     {
-        return $packageType === 'notadd-expand';
+        return $packageType === 'notadd-addon';
     }
 }

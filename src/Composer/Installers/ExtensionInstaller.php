@@ -12,7 +12,7 @@ use Composer\Installer\LibraryInstaller;
 use Composer\Package\PackageInterface;
 
 /**
- * Class ExtensionInstaller.
+ * Class ExpandInstaller.
  */
 class ExtensionInstaller extends LibraryInstaller
 {
@@ -27,7 +27,7 @@ class ExtensionInstaller extends LibraryInstaller
     {
         list($vendor, $name) = explode('/', $package->getPrettyName());
 
-        return 'extensions/' . $vendor . '/' . $name;
+        return 'expands/' . $name;
     }
 
     /**

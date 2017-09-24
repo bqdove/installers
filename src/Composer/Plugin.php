@@ -13,8 +13,8 @@ use Composer\Composer;
 use Composer\IO\IOInterface;
 //use Composer\Plugin\PluginEvents;
 use Composer\Plugin\PluginInterface;
-use Notadd\Installer\Composer\Installers\ExpandInstaller;
 use Notadd\Installer\Composer\Installers\ExtensionInstaller;
+use Notadd\Installer\Composer\Installers\AddonInstaller;
 use Notadd\Installer\Composer\Installers\ModuleInstaller;
 
 /**
@@ -42,8 +42,8 @@ class Plugin implements /*EventSubscriberInterface, */PluginInterface
     {
         $this->composer = $composer;
         $this->io = $io;
+        $composer->getInstallationManager()->addInstaller(new AddonInstaller($io, $composer));
         $composer->getInstallationManager()->addInstaller(new ExtensionInstaller($io, $composer));
-        $composer->getInstallationManager()->addInstaller(new ExpandInstaller($io, $composer));
         $composer->getInstallationManager()->addInstaller(new ModuleInstaller($io, $composer));
     }
 
