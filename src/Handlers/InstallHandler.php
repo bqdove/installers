@@ -26,6 +26,7 @@ class InstallHandler extends Handler
      */
     public function execute()
     {
+        set_time_limit(0);
         if ($this->container->isInstalled()) {
             $this->withCode(500)->withError('Notadd 已经安装，无需重复安装！');
         } else {
