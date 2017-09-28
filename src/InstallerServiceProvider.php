@@ -89,9 +89,8 @@ class InstallerServiceProvider extends ServiceProvider
                 'json',
                 'mbstring',
                 'openssl',
-                'pdo_mysql',
             ]), new WritablePath([
-                public_path(),
+                static_path(),
                 storage_path(),
             ]));
         });
