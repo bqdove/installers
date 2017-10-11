@@ -8,8 +8,6 @@
  */
 namespace Notadd\Installer\Commands;
 
-use Illuminate\Contracts\Config\Repository;
-use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Collection;
 use Notadd\Administration\ModuleServiceProvider;
 use Notadd\Foundation\Console\Abstracts\Command;
@@ -24,19 +22,9 @@ use Symfony\Component\Yaml\Yaml;
 class InstallCommand extends Command
 {
     /**
-     * @var \Illuminate\Contracts\Config\Repository
-     */
-    protected $config;
-
-    /**
      * @var \Illuminate\Support\Collection
      */
     protected $data;
-
-    /**
-     * @var \Illuminate\Filesystem\Filesystem
-     */
-    protected $filesystem;
 
     /**
      * @var bool
@@ -45,16 +33,11 @@ class InstallCommand extends Command
 
     /**
      * InstallCommand constructor.
-     *
-     * @param \Illuminate\Filesystem\Filesystem       $files
-     * @param \Illuminate\Contracts\Config\Repository $config
      */
-    public function __construct(Filesystem $files, Repository $config)
+    public function __construct()
     {
         parent::__construct();
-        $this->config     = $config;
         $this->data       = new Collection();
-        $this->filesystem = $files;
     }
 
     /**
@@ -235,7 +218,7 @@ class InstallCommand extends Command
     protected function writingConfiguration()
     {
         $file = $this->container->environmentFilePath();
-        $this->filesystem->exists($file) || touch($file);
+        $this->file->exists($file) || touch($file);
 
         $database = new Collection($this->container->make(Yaml::class)->parse(file_get_contents($file)));
         $database->put('BROADCAST_DRIVER', 'redis');

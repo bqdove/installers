@@ -19,22 +19,6 @@ use Symfony\Component\Yaml\Yaml;
  */
 class IntegrationConfigurationCommand extends Command
 {
-    /**
-     * @var \Illuminate\Filesystem\Filesystem
-     */
-    protected $files;
-
-    /**
-     * IntegrationConfigurationCommand constructor.
-     *
-     * @param \Illuminate\Filesystem\Filesystem $files
-     */
-    public function __construct(Filesystem $files)
-    {
-        parent::__construct();
-        $this->files = $files;
-    }
-
     public function configure()
     {
         $this->addOption('driver', null, InputOption::VALUE_REQUIRED, 'Database driver, such as mysql, pgsql, sqlite.');
@@ -50,7 +34,7 @@ class IntegrationConfigurationCommand extends Command
     public function handle()
     {
         $file = $this->container->environmentFilePath();
-        $this->files->exists($file) || touch($file);
+        $this->file->exists($file) || touch($file);
         $database = new Collection($this->container->make(Yaml::class)->parse(file_get_contents($file)));
         $database->put('DB_CONNECTION', $this->input->getOption('driver'));
         $database->put('DB_HOST', $this->input->getOption('host'));

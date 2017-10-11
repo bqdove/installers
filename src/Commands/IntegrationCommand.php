@@ -43,12 +43,11 @@ class IntegrationCommand extends Command
             '--force' => true,
         ]);
 
-        $setting = $this->container->make(SettingsRepository::class);
-        $setting->set('application.version', $this->container->version());
-        $setting->set('site.enabled', true);
-        $setting->set('site.name', 'Notadd');
-        $setting->set('setting.image.engine', 'normal');
-        $setting->set('module.notadd/administration.enabled', true);
+        $this->setting->set('application.version', $this->container->version());
+        $this->setting->set('site.enabled', true);
+        $this->setting->set('site.name', 'Notadd');
+        $this->setting->set('setting.image.engine', 'normal');
+        $this->setting->set('module.notadd/administration.enabled', true);
 
         Member::query()->create([
             'name'     => 'admin',
