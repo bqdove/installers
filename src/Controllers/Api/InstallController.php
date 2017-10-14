@@ -24,7 +24,7 @@ class InstallController extends Controller
      *
      * @param \Notadd\Installer\Handlers\CheckHandler $handler
      *
-     * @return \Notadd\Foundation\Passport\Responses\ApiResponse|\Psr\Http\Message\ResponseInterface|\Zend\Diactoros\Response
+     * @return \Notadd\Foundation\Routing\Responses\ApiResponse|\Psr\Http\Message\ResponseInterface|\Zend\Diactoros\Response
      * @throws \Exception
      */
     public function check(CheckHandler $handler)
@@ -37,7 +37,7 @@ class InstallController extends Controller
      *
      * @param \Notadd\Installer\Handlers\DatabaseHandler $handler
      *
-     * @return \Notadd\Foundation\Passport\Responses\ApiResponse|\Psr\Http\Message\ResponseInterface|\Zend\Diactoros\Response
+     * @return \Notadd\Foundation\Routing\Responses\ApiResponse|\Psr\Http\Message\ResponseInterface|\Zend\Diactoros\Response
      */
     public function database(DatabaseHandler $handler)
     {
@@ -49,7 +49,7 @@ class InstallController extends Controller
      *
      * @param \Notadd\Installer\Handlers\InformationHandler $handler
      *
-     * @return \Notadd\Foundation\Passport\Responses\ApiResponse|\Psr\Http\Message\ResponseInterface|\Zend\Diactoros\Response
+     * @return \Notadd\Foundation\Routing\Responses\ApiResponse|\Psr\Http\Message\ResponseInterface|\Zend\Diactoros\Response
      */
     public function information(InformationHandler $handler)
     {
@@ -61,7 +61,7 @@ class InstallController extends Controller
      *
      * @param \Notadd\Installer\Handlers\InstallHandler $handler
      *
-     * @return \Notadd\Foundation\Passport\Responses\ApiResponse|\Psr\Http\Message\ResponseInterface|\Zend\Diactoros\Response
+     * @return \Notadd\Foundation\Routing\Responses\ApiResponse|\Psr\Http\Message\ResponseInterface|\Zend\Diactoros\Response
      * @throws \Exception
      */
     public function install(InstallHandler $handler)
