@@ -71,7 +71,7 @@
                 },
                 validates: {
                     account: {
-                        mail: 'required|email|alpha_dash',
+                        mail: 'required|email',
                         password: 'required|alpha_dash',
                         username: 'required|alpha_dash',
                     },
