@@ -10,14 +10,12 @@ namespace Notadd\Installer\Commands;
 
 use Notadd\Foundation\Console\Abstracts\Command;
 use Notadd\Foundation\Member\Member;
-use Notadd\Foundation\Setting\Contracts\SettingsRepository;
 
 /**
  * Class IntegrationCommand.
  */
 class IntegrationCommand extends Command
 {
-
     /**
      * Configure command.
      */
@@ -27,17 +25,16 @@ class IntegrationCommand extends Command
         $this->setName('integration');
     }
 
+    /**
+     * Command handler.
+     */
     public function handle()
     {
         $this->call('migrate', [
             '--force' => true,
         ]);
 
-        $this->call('passport:keys');
-        $this->call('passport:client', [
-            '--password' => true,
-            '--name'     => 'Notadd Administrator Client',
-        ]);
+        $this->call('jwt:generate');
 
         $this->call('vendor:publish', [
             '--force' => true,
