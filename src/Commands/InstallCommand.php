@@ -118,6 +118,13 @@ class InstallCommand extends Command
                 break;
         }
 
+        $this->config->set('database.redis.default', [
+            'host'     => $this->data->get('redis_host', 'localhost'),
+            'password' => $this->data->get('redis_password') ?: null,
+            'port'     => $this->data->get('redis_port', 6379),
+            'database' => 0,
+        ]);
+
         if (class_exists(ModuleServiceProvider::class)) {
             $this->container->getProvider(ModuleServiceProvider::class) || $this->container->register(ModuleServiceProvider::class);
         }
@@ -141,6 +148,7 @@ class InstallCommand extends Command
         $this->createAdministrationUser();
         $this->writingConfiguration();
         $this->call('key:generate');
+        $this->redis->flushall();
         $this->info('Notadd Installed!');
     }
 
