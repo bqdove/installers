@@ -45,7 +45,31 @@ class DatabaseHandler extends Handler
             $this->withCode(500)->withError('Notadd 已经安装，无需重复安装！');
         } else {
             if ($this->request->input('database_engine') == 'sqlite') {
-                $this->withCode(200)->withMessage('SQLite 无需检测！');
+                $this->repository->set('database.redis.default', [
+                    'host'     => $this->request->input('redis_host', 'localhost'),
+                    'password' => $this->request->input('redis_password') ?: null,
+                    'port'     => $this->request->input('redis_port', 6379),
+                    'database' => 0,
+                ]);
+                try {
+                    $this->container->make('redis')->connect();
+                    $this->withCode(200)->withMessage('数据库验证正确！');
+                } catch (Exception $exception) {
+                    switch ($exception->getCode()) {
+                        case 0:
+                            $error = 'Redis 密码未设置或密码错误！';
+                            break;
+                        case 99:
+                            $error = 'Redis 地址不可访问！';
+                            break;
+                        case 111:
+                            $error = 'Redis 配置错误！';
+                            break;
+                        default:
+                            $error = '未知错误！';
+                    }
+                    $this->withCode(500)->withData($exception->getTrace())->withError($error);
+                }
             } else {
                 $this->repository->set('database', [
                     'fetch'       => PDO::FETCH_CLASS,
@@ -98,7 +122,7 @@ class DatabaseHandler extends Handler
                     if ($results->count()) {
                         $this->withCode(500)->withError('数据库[' . $this->request->input('database_name') . ']已经存在数据表，请先清空数据库！');
                     } else {
-                        $this->withCode(200)->withMessage('');
+                        $this->withCode(200)->withMessage('数据库验证正确！');
                     }
                 } catch (Exception $exception) {
                     switch ($exception->getCode()) {
