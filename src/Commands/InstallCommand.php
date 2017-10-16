@@ -126,11 +126,7 @@ class InstallCommand extends Command
             '--force' => true,
         ]);
 
-        $this->call('passport:keys');
-        $this->call('passport:client', [
-            '--password' => true,
-            '--name'     => 'Notadd Administrator Client',
-        ]);
+        $this->call('jwt:generate');
 
         $this->call('vendor:publish', [
             '--force' => true,
