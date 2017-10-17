@@ -697,18 +697,18 @@
                                 <div class="form-group">
                                     <label>账户</label>
                                     <input type="text"
+                                           :disabled="true"
                                            placeholder="未输入管理员账号"
-                                           v-model="account.username"
-                                           v-validate="validates.account.username">
+                                           v-model="account.username">
                                 </div>
                             </div>
                             <div class="col-4">
                                 <div class="form-group">
                                     <label>密码</label>
                                     <input type="text"
+                                           :disabled="true"
                                            placeholder="未输入管理员密码"
-                                           v-model="account.password"
-                                           v-validate="validates.account.password">
+                                           v-model="account.password">
                                 </div>
                             </div>
                         </div>
