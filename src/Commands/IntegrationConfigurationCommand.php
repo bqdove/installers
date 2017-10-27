@@ -35,7 +35,7 @@ class IntegrationConfigurationCommand extends Command
     {
         $file = $this->container->environmentFilePath();
         $this->file->exists($file) || touch($file);
-        $database = new Collection($this->container->make(Yaml::class)->parse(file_get_contents($file)));
+        $database = new Collection(Yaml::parse(file_get_contents($file)));
         $database->put('DB_CONNECTION', $this->input->getOption('driver'));
         $database->put('DB_HOST', $this->input->getOption('host'));
         $database->put('DB_PORT', $this->input->getOption('port'));
@@ -44,6 +44,6 @@ class IntegrationConfigurationCommand extends Command
         $database->put('DB_PASSWORD', $this->input->getOption('password') ?: '');
         $database->put('DB_PREFIX', $this->input->getOption('prefix'));
 
-        file_put_contents($file, $this->container->make(Yaml::class)->dump($database->toArray()));
+        file_put_contents($file, Yaml::dump($database->toArray()));
     }
 }
