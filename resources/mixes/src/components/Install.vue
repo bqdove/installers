@@ -76,9 +76,9 @@
                         username: 'required|alpha_dash',
                     },
                     database: {
-                        database: 'required',
+                        database: 'required|alpha_dash',
                         engine: 'required|alpha_dash',
-                        host: 'required|alpha_dash',
+                        host: 'required',
                         password: 'required|alpha_dash',
                         username: 'required|alpha_dash',
                     },
