@@ -72,14 +72,14 @@
                 validates: {
                     account: {
                         mail: 'required|email',
-                        password: 'required|alpha_dash',
+                        password: 'required',
                         username: 'required|alpha_dash',
                     },
                     database: {
                         database: 'required|alpha_dash',
                         engine: 'required|alpha_dash',
                         host: 'required',
-                        password: 'required|alpha_dash',
+                        password: 'required',
                         username: 'required|alpha_dash',
                     },
                     redis: {
