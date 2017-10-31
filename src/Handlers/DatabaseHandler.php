@@ -2,17 +2,19 @@
 /**
  * This file is part of Notadd.
  *
- * @author TwilRoad <heshudong@ibenchu.com>
+ * @author        TwilRoad <heshudong@ibenchu.com>
  * @copyright (c) 2017, notadd.com
- * @datetime 2017-04-09 11:41
+ * @datetime      2017-04-09 11:41
  */
 namespace Notadd\Installer\Handlers;
 
 use Exception;
 use Illuminate\Container\Container;
 use Illuminate\Contracts\Config\Repository;
+use Illuminate\Support\Str;
 use Notadd\Foundation\Routing\Abstracts\Handler;
 use PDO;
+use Predis\Connection\ConnectionException;
 
 /**
  * Class DatabaseHandler.
@@ -125,30 +127,35 @@ class DatabaseHandler extends Handler
                         $this->withCode(200)->withMessage('数据库验证正确！');
                     }
                 } catch (Exception $exception) {
-                    switch ($exception->getCode()) {
-                        case 0:
-                            $error = 'Redis 密码未设置或密码错误！';
-                            break;
-                        case 7:
-                            $error = '数据库账号或密码错误，或数据库不存在！';
-                            break;
-                        case 99:
-                            $error = 'Redis 地址不可访问！';
-                            break;
-                        case 111:
-                            $error = 'Redis 配置错误！';
-                            break;
-                        case 1045:
-                            $error = '数据库账号或密码错误！';
-                            break;
-                        case 1049:
-                            $error = '数据库[' . $this->request->input('database_name') . ']不存在，请先创建数据库！';
-                            break;
-                        default:
-                            $error = array_merge((array)$exception->getCode(), (array)$exception->getMessage());
-                            break;
+                    if ($exception instanceof ConnectionException) {
+                        $message = $exception->getMessage();
+                        if (Str::contains($message, 'Name or service not known')) {
+                            $error = 'Redis 服务未安装或服务地址错误！';
+                        } else if (Str::contains($message, 'no password is set')) {
+                            $error = 'Redis 服务未设置密码，不必填写密码！';
+                        } else if (Str::contains($message, 'Connection refused')) {
+                            $error = 'Redis 服务连接请求被拒绝，请检查配置输入是否正确！';
+                        }
+                    } else {
+                        switch ($exception->getCode()) {
+                            case 7:
+                                $error = '数据库账号或密码错误，或数据库不存在！';
+                                break;
+                            case 1045:
+                                $error = '数据库账号或密码错误！';
+                                break;
+                            case 1049:
+                                $error = '数据库[' . $this->request->input('database_name') . ']不存在，请先创建数据库！';
+                                break;
+                            default:
+                                $error = array_merge((array)$exception->getCode(), (array)$exception->getMessage());
+                                break;
+                        }
                     }
-                    $this->withCode(500)->withData($exception->getTrace())->withError($error);
+                    $this->withCode(500)->withData([
+                        'code'   => $exception->getCode(),
+                        'traces' => $exception->getTrace(),
+                    ])->withError($error);
                 }
             }
         }
