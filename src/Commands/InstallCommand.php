@@ -237,7 +237,7 @@ class InstallCommand extends Command
         $database->put('REDIS_HOST', $this->data->get('redis_host'));
         $this->data->get('redis_password') && $database->put('REDIS_PASSWORD', $this->data->get('redis_password'));
         $database->put('REDIS_PORT', $this->data->get('redis_port'));
-        $database->put('QUEUE_DRIVER', 'redis');
+        $database->put('QUEUE_DRIVER', 'sync');
 
         file_put_contents($file, Yaml::dump($database->toArray()));
         touch($this->container->storagePath() . DIRECTORY_SEPARATOR . 'installed');
