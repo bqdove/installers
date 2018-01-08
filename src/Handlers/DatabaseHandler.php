@@ -135,6 +135,8 @@ class DatabaseHandler extends Handler
                             $error = 'Redis 服务未设置密码，不必填写密码！';
                         } else if (Str::contains($message, 'Connection refused')) {
                             $error = 'Redis 服务连接请求被拒绝，请检查配置输入是否正确！';
+                        } else {
+                            $error = 'Redis 无法连接（地址错误，未安装或未启动)';
                         }
                     } else {
                         switch ($exception->getCode()) {
