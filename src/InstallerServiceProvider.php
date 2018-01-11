@@ -82,14 +82,16 @@ class InstallerServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->singleton(Prerequisite::class, function () {
-            return new Composite(new PhpVersion('5.6.28'), new PhpExtension([
+        	$extends = [
                 'dom',
                 'fileinfo',
                 'gd',
                 'json',
                 'mbstring',
                 'openssl',
-            ]), new WritablePath([
+            ];
+			$extends = array_merge($extends,$this->app->getAdditionalExtension());
+            return new Composite(new PhpVersion('5.6.28'), new PhpExtension($extends), new WritablePath([
                 static_path(),
                 storage_path(),
             ]));
